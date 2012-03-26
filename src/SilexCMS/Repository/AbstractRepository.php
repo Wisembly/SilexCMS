@@ -1,6 +1,6 @@
 <?php
 
-namespace SilexCMS\Core;
+namespace SilexCMS\Repository;
 
 abstract class AbstractRepository
 {
