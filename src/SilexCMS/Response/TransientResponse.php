@@ -1,6 +1,6 @@
 <?php
 
-namespace SilexCMS\Core;
+namespace SilexCMS\Response;
 
 use Symfony\Component\HttpFoundation\Response;
 
