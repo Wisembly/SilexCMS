@@ -13,7 +13,6 @@ use SilexCMS\Response\TransientResponse;
 
 class DataSet implements ServiceProviderInterface
 {
-    private $app;
     private $block;
     private $table;
     
@@ -31,19 +30,17 @@ class DataSet implements ServiceProviderInterface
     {
         $self = $this;
         
-        $this->app = $app;
-        
-        $app->after(function (Request $req, Response $resp) use ($self) {
-            $self->filter($resp);
+        $app->after(function (Request $req, Response $resp) use ($self, $app) {
+            $self->filter($app, $resp);
         });
     }
     
-    public function filter(Response $resp)
+    public function filter(Application $app, Response $resp)
     {
         if ($resp instanceof TransientResponse) {
             if ($resp->getTemplate()->hasBlock($this->block)) {
-                $repository = new GenericRepository($this->app['db'], $this->table);
-                $this->app[$this->block] = $repository->findAll();
+                $repository = new GenericRepository($app['db'], $this->table);
+                $app[$this->block] = $repository->findAll();
             }
         }
     }
