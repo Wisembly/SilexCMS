@@ -31,7 +31,7 @@ class DynamicPage implements ServiceProviderInterface
         $app->get($this->route, function (Application $app, Request $req) use (&$templateAccessor, &$tableAccessor) {
             $response = new TransientResponse($app['twig'], $templateAccessor);
             $repository = new GenericRepository($app['db'], $tableAccessor);
-            $response->getVariables()->set = null;
+            $app['set']->set = null;
             
             return $response;
         });
