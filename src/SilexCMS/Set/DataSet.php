@@ -37,7 +37,7 @@ class DataSet implements ServiceProviderInterface
     public function filter(Response $resp)
     {
         if ($resp instanceof TransientResponse) {
-            if ($resp->getTwig()->hasBlock($this->name)) {
+            if ($resp->getTemplate()->hasBlock($this->name)) {
                 $repository = new GenericRepository($this->app['db'], $this->table);
                 $resp->getVariables()->{$this->block} = $this->app[$this->name] = $repository->findAll();
             }
