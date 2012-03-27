@@ -12,6 +12,16 @@ use SilexCMS\Response\TransientResponse;
 
 class DataSet
 {
+    public function __construct($block, $table = null)
+    {
+        if (is_null($table)) {
+            $table = $block;
+        }
+        
+        $this->block = $block;
+        $this->table = $table;
+    }
+    
     public function register(Application $app)
     {
         $this->app = $app;
