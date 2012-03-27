@@ -25,6 +25,8 @@ class DataSet implements ServiceProviderInterface
     
     public function register(Application $app)
     {
+        $self = $this;
+        
         $this->app = $app;
         
         $app->after(function (Request $req, Response $resp) use ($self, $app) {
