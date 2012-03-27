@@ -23,10 +23,10 @@ class StaticPage implements ServiceProviderInterface
     
     public function register(Application $app)
     {
-        $self = $this;
+        $templateAccessor =& $self->template;
         
-        $app->get($this->route, function (Application $app, Request $req) use ($self) {
-            return new TransientResponse($app['twig'], $self->template);
+        $app->get($this->route, function (Application $app, Request $req) use (&$templateAccessor) {
+            return new TransientResponse($app['twig'], $templateAccessor);
         });
     }
 }

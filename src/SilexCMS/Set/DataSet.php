@@ -33,7 +33,7 @@ class DataSet implements ServiceProviderInterface
         
         $this->app = $app;
         
-        $app->after(function (Request $req, Response $resp) use ($self, $app) {
+        $app->after(function (Request $req, Response $resp) use ($self) {
             $self->filter($resp);
         });
     }
