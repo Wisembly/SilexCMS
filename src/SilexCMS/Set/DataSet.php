@@ -39,7 +39,7 @@ class DataSet implements ServiceProviderInterface
         if ($resp instanceof TransientResponse) {
             if ($resp->getTemplate()->hasBlock($this->name)) {
                 $repository = new GenericRepository($this->app['db'], $this->table);
-                $resp->getVariables()->{$this->block} = $this->app[$this->name] = $repository->findAll();
+                $resp->getVariables()->{$this->block} = $this->app[$this->block] = $repository->findAll();
             }
         }
     }
