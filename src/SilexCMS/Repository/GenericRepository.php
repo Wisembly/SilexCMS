@@ -2,7 +2,9 @@
 
 namespace SilexCMS\Repository;
 
-class GenericRepository
+use SilexCMS\Repository\AbstractRepository;
+
+class GenericRepository extends AbstractRepository
 {
     protected $table = null;
     
