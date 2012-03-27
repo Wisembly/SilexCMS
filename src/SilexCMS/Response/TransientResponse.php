@@ -7,15 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 class TransientResponse extends Response
 {
     private $twig;
-    
     private $template;
-	
     private $variables;
 	
     public function __construct($twig, $template, $variables = null)
     {
         $this->template = $twig->loadTemplate($template);
-		
         $this->variables = (object) $variables;
 		
         parent::__construct();

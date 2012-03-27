@@ -12,10 +12,12 @@ use SilexCMS\Response\TransientResponse;
 
 class StaticPage implements ServiceProviderInterface
 {
+    private $route;
+    private $template;
+    
     public function __construct($route, $template)
     {
         $this->route = $route;
-        
         $this->template = $template;
     }
     

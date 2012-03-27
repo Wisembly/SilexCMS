@@ -13,6 +13,10 @@ use SilexCMS\Response\TransientResponse;
 
 class DataSet implements ServiceProviderInterface
 {
+    private $app;
+    private $block;
+    private $table;
+    
     public function __construct($block, $table = null)
     {
         if (is_null($table)) {

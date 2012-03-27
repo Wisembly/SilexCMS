@@ -12,12 +12,14 @@ use SilexCMS\Response\TransientResponse;
 
 class DynamicPage implements ServiceProviderInterface
 {
+    private $route;
+    private $table;
+    private $template;
+    
     public function __construct($route, $table, $template = null)
     {
         $this->route = $route;
-        
         $this->table = $table;
-        
         $this->template = !is_null($template) ? $template : $table . '.html.twig';
     }
     

@@ -4,7 +4,8 @@ namespace SilexCMS\Repository;
 
 abstract class AbstractRepository
 {
-    protected $table = null;
+    private $db;
+    protected $table;
 	
     public function __construct($db)
     {
