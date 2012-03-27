@@ -1,0 +1,33 @@
+<?php
+
+namespace SilexCMS\Set;
+
+use Silex\Application;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+use SilexCMS\Repository\GenericRepository;
+use SilexCMS\Response\TransientResponse;
+
+class DataSet
+{
+    public function register(Application $app)
+    {
+        $this->app = $app;
+        
+        $app->after(function (Request $req, Response $resp) use ($self, $app) {
+            $self->filter($resp);
+        });
+    }
+    
+    public function filter(Response $resp)
+    {
+        if ($resp instanceof TransientResponse) {
+            if ($resp->getTwig()->hasBlock($this->name)) {
+                $repository = new GenericRepository($this->app['db'], $this->table);
+                $resp->getVariables()->{$this->block} = $this->app[$this->name] = $repository->findAll();
+            }
+        }
+    }
+}
