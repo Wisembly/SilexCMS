@@ -25,8 +25,8 @@ class DynamicPage implements ServiceProviderInterface
     
     public function register(Application $app)
     {
-        $templateAccessor =& $self->template;
-        $tableAccessor =& $self->table;
+        $templateAccessor =& $this->template;
+        $tableAccessor =& $this->table;
         
         $app->get($this->route, function (Application $app, Request $req) use (&$templateAccessor, &$tableAccessor) {
             $response = new TransientResponse($app['twig'], $templateAccessor);
