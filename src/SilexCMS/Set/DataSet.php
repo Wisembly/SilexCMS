@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use SilexCMS\Repository\GenericRepository;
 use SilexCMS\Response\TransientResponse;
 
-class DataSet extends ServiceProviderInterface
+class DataSet implements ServiceProviderInterface
 {
     public function __construct($block, $table = null)
     {
