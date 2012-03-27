@@ -3,6 +3,7 @@
 namespace SilexCMS\Set;
 
 use Silex\Application;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use SilexCMS\Repository\GenericRepository;
 use SilexCMS\Response\TransientResponse;
 
-class DataSet
+class DataSet extends ServiceProviderInterface
 {
     public function __construct($block, $table = null)
     {
