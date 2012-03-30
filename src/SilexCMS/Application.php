@@ -9,6 +9,7 @@ use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SymfonyBridgesServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Silex\Provider\SessionServiceProvider;
 
 class Application extends BaseApplication
 {
@@ -26,5 +27,6 @@ class Application extends BaseApplication
         $this->register(new SymfonyBridgesServiceProvider());
         $this->register(new TranslationServiceProvider());
         $this->register(new ValidatorServiceProvider());
+        $this->register(new SessionServiceProvider());
     }
 }
