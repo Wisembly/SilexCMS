@@ -22,9 +22,9 @@ class Application extends BaseApplication
         }
         
         $this->register(new TwigServiceProvider());
+        $this->register(new SymfonyBridgesServiceProvider());
         $this->register(new DoctrineServiceProvider());
         $this->register(new FormServiceProvider());
-        $this->register(new SymfonyBridgesServiceProvider());
         $this->register(new TranslationServiceProvider());
         $this->register(new ValidatorServiceProvider());
         $this->register(new SessionServiceProvider());
