@@ -8,6 +8,7 @@ use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use SilexCMS\Repository\GenericRepository;
 use SilexCMS\Response\TransientResponse;
 
 class DynamicPage implements ServiceProviderInterface
@@ -28,10 +29,10 @@ class DynamicPage implements ServiceProviderInterface
         $templateAccessor =& $this->template;
         $tableAccessor =& $this->table;
         
-        $app->get($this->route, function (Application $app, Request $req) use (&$templateAccessor, &$tableAccessor) {
+        $app->get($this->route, function (Application $app, Request $req, $_route_params) use (&$templateAccessor, &$tableAccessor) {
             $response = new TransientResponse($app['twig'], $templateAccessor);
             $repository = new GenericRepository($app['db'], $tableAccessor);
-            $app['set']->set = null;
+            $app['set'] = $repository->select($_route_params)->fetchAll();
             
             return $response;
         });
