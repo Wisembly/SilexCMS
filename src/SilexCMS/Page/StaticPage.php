@@ -21,12 +21,22 @@ class StaticPage implements ServiceProviderInterface
         $this->template = $template;
     }
     
+    public function getRoute()
+    {
+        return $this->route;
+    }
+    
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+    
     public function register(Application $app)
     {
         $thisAccessor = $this; // php 5.3 workaround
         
-        $app->get($this->route, function (Application $app, Request $req) use ($thisAccessor) {
-            return new TransientResponse($app['twig'], $thisAccessor->template);
+        $app->get($this->getRoute(), function (Application $app, Request $req) use ($thisAccessor) {
+            return new TransientResponse($app['twig'], $thisAccessor->getTemplate());
         });
     }
 }

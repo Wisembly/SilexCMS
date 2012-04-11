@@ -24,13 +24,28 @@ class DynamicPage implements ServiceProviderInterface
         $this->template = !is_null($template) ? $template : $table . '.html.twig';
     }
     
+    public function getRoute()
+    {
+        return $this->route;
+    }
+    
+    public function getTable()
+    {
+        return $this->table;
+    }
+    
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+    
     public function register(Application $app)
     {
         $thisAccessor = $this; // php 5.3 workaround
         
-        $app->get($this->route, function (Application $app, Request $req, $_route_params) use ($thisAccessor) {
-            $response = new TransientResponse($app['twig'], $thisAccessor->template);
-            $repository = new GenericRepository($app['db'], $thisAccessor->table);
+        $app->get($this->getRoute(), function (Application $app, Request $req, $_route_params) use ($thisAccessor) {
+            $response = new TransientResponse($app['twig'], $thisAccessor->getTemplate());
+            $repository = new GenericRepository($app['db'], $thisAccessor->getTable());
             $app['set'] = $repository->select($_route_params)->fetchAll();
             return $response;
         });
