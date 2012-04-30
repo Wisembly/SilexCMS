@@ -50,11 +50,11 @@ $app['main']->bindUsername('user');
 var_dump($app['main']->getUsername()); // "user"
 ```
 
-### Request example
+#### Request example
 
 You can also bind requests if they have at least two parameters : `_username` and `_password`.
 
-**startup.php**
+##### startup.php
 ```php
 $app->register(new SilexCMS\Security\Firewall('security', array('user' => 'pass')));
 
@@ -73,7 +73,7 @@ $app->post('/post', function (Application $app, Request $req) {
 });
 ```
 
-**login.html.twig**
+##### login.html.twig
 ```
 <form action="/login" method="post">
     <input type="text" name="_password" /><br />
