@@ -11,17 +11,7 @@ use SilexCMS\Tests\Base;
 
 class DataSetTest extends Base
 {
-    public function testRegisterAndRenderWithSingleParameter()
-    {
-        $app = $this->getApplication();
-        
-        $app->register(new DataSet('letters'));
-        $app->register(new StaticPage('/dataset', $this->getTemplateStream('{% block letters %}{% for f in app.letters %}{{ f.val }}{% endfor %}{% endblock %}')));
-        
-        $this->assertEquals('abc', $app->handle(Request::create('/dataset'))->getContent());
-    }
-    
-    public function testRegisterAndRenderWithOptionalParameter()
+    public function testRegisterAndRender()
     {
         $app = $this->getApplication();
         
@@ -38,7 +28,7 @@ class DataSetTest extends Base
     {
         $app = $this->getApplication();
         
-        $app->register(new DataSet('letters'));
+        $app->register(new DataSet('letters', 'letters'));
         $app->register(new StaticPage('/dataset', $this->getTemplateStream('there is no block level')));
         
         $app->handle(Request::create('/dataset'));
