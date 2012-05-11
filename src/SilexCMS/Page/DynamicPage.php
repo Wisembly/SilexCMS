@@ -17,11 +17,11 @@ class DynamicPage implements ServiceProviderInterface
     private $table;
     private $template;
     
-    public function __construct($route, $table, $template = null)
+    public function __construct($route, $template, $table)
     {
         $this->route = $route;
+        $this->template = $template;
         $this->table = $table;
-        $this->template = !is_null($template) ? $template : $table . '.html.twig';
     }
     
     public function getRoute()
