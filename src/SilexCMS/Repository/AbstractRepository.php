@@ -22,8 +22,12 @@ abstract class AbstractRepository
         return $this->db->executeUpdate($query, $arguments);
     }
 	
-    public function select($condition)
+    public function select($condition = null)
     {
+        if (is_null($condition)) {
+            $condition = array();
+        }
+
         if (is_numeric($condition)) {
             $condition = array('id' => $condition);
         }

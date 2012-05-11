@@ -16,14 +16,11 @@ class DataSet implements ServiceProviderInterface
     private $block;
     private $table;
     
-    public function __construct($block, $table = null)
+    public function __construct($block, $table, $conditions = null)
     {
-        if (is_null($table)) {
-            $table = $block;
-        }
-        
         $this->block = $block;
         $this->table = $table;
+        $this->conditions = $conditions;
     }
     
     public function register(Application $app)
@@ -40,7 +37,7 @@ class DataSet implements ServiceProviderInterface
         if ($resp instanceof TransientResponse) {
             if ($resp->getTemplate()->hasBlock($this->block)) {
                 $repository = new GenericRepository($app['db'], $this->table);
-                $app[$this->block] = $repository->findAll();
+                $app[$this->block] = $repository->select($this->conditions);
             }
         }
     }
