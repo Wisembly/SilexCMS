@@ -12,6 +12,7 @@
 		"symfony/form" : "2.1.*",
 		"symfony/twig-bridge" : "dev-master",
 		"symfony/translation" : "dev-master",
+		"symfony/validator" : "dev-master",
 		"silex/silex" : "*",
 		"doctrine/common" : "*",
 		"doctrine/dbal" : "*",
