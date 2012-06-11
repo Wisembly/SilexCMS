@@ -20,6 +20,10 @@ class Firewall implements ServiceProviderInterface
         $this->username = null;
     }
     
+    public function boot(Application $app)
+    {
+    }
+    
     public function register(Application $app)
     {
         $logger = $app[$this->name] = new Logger($this, $app);

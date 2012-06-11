@@ -31,6 +31,10 @@ class StaticPage implements ServiceProviderInterface
         return $this->template;
     }
     
+    public function boot(Application $app)
+    {
+    }
+    
     public function register(Application $app)
     {
         $thisAccessor = $this; // php 5.3 workaround

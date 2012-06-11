@@ -18,6 +18,10 @@ class FormDescription implements ServiceProviderInterface
         $this->builder = $builder;
     }
     
+    public function boot(Application $app)
+    {
+    }
+    
     public function register(Application $app)
     {
         $form = $app[$this->name] = $app['form.factory']->createBuilder($this->builder)->getForm();
