@@ -1,19 +1,21 @@
 {
 	"name" : "balloon/silexcms",
 	"type" : "library",
+
 	"autoload" : {
 		"psr-0" : {
-			"SilexCMS" : "src/",
+			"SilexCMS"        : "src/",
 			"SilexCMS\\Tests" : "tests/"
 		}
 	},
+
 	"require" : {
-		"php" : ">=5.3.2",
-		"doctrine/dbal" : "dev-master",
-		"silex/silex" : "dev-master",
-		"symfony/form" : "dev-master",
-		"symfony/twig-bridge" : "dev-master",
-		"symfony/translation" : "dev-master",
-		"twig/twig" : "dev-master"
+		"php"                 : ">=5.3.2",
+		"doctrine/dbal"       : "2.2.*",
+		"silex/silex"         : "1.0.*",
+		"symfony/form"        : "2.1.*",
+		"symfony/twig-bridge" : "2.1.*",
+		"symfony/translation" : "2.1.*",
+		"twig/twig"           : ">=1.8,<2.0-dev"
 	}
 }
