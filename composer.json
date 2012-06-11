@@ -9,12 +9,11 @@
 	},
 	"require" : {
 		"php" : ">=5.3.2",
-		"symfony/form" : "2.1.*",
+		"symfony/form" : "dev-master",
 		"symfony/twig-bridge" : "dev-master",
 		"symfony/translation" : "dev-master",
-		"silex/silex" : "*",
-		"doctrine/common" : "*",
-		"doctrine/dbal" : "*",
-		"twig/twig" : "*"
+		"silex/silex" : "dev-master",
+		"doctrine/dbal" : "dev-master",
+		"twig/twig" : "dev-master"
 	}
 }
