@@ -16,6 +16,7 @@
 		"symfony/form"        : "2.1.*",
 		"symfony/twig-bridge" : "2.1.*",
 		"symfony/translation" : "2.1.*",
+		"symfony/validator"   : "2.1.*",
 		"twig/twig"           : ">=1.8,<2.0-dev"
 	}
 }
