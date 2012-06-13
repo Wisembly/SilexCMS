@@ -28,7 +28,7 @@ class Firewall implements ServiceProviderInterface
     {
         $logger = $app[$this->name] = new Logger($this, $app);
         
-        $app->before(function () use ($logger) {
+        $app->before(function ($request) use ($logger) {
             $logger->bindSession();
         });
     }

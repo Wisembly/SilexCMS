@@ -34,7 +34,7 @@ class Logger
     {
         $username = $req->get('_username');
         $password = $req->get('_password');
-        
+
         return $this->bindUser($this->service->check($username, $password) ? $username : null);
     }
     

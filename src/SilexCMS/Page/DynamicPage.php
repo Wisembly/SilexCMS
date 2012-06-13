@@ -13,30 +13,17 @@ use SilexCMS\Response\TransientResponse;
 
 class DynamicPage implements ServiceProviderInterface
 {
+    private $name;
     private $route;
-    private $table;
     private $template;
+    private $table;
     
-    public function __construct($route, $template, $table)
+    public function __construct($name, $route, $template, $table)
     {
+        $this->name = $name;
         $this->route = $route;
         $this->template = $template;
         $this->table = $table;
-    }
-    
-    public function getRoute()
-    {
-        return $this->route;
-    }
-    
-    public function getTable()
-    {
-        return $this->table;
-    }
-    
-    public function getTemplate()
-    {
-        return $this->template;
     }
     
     public function boot(Application $app)
@@ -45,11 +32,14 @@ class DynamicPage implements ServiceProviderInterface
     
     public function register(Application $app)
     {
-        $thisAccessor = $this; // php 5.3 workaround
+        $name = $this->name;
+        $route = $this->route;
+        $template = $this->template;
+        $table = $this->table;
         
-        $app->get($this->getRoute(), function (Application $app, Request $req, $_route_params) use ($thisAccessor) {
-            $response = new TransientResponse($app['twig'], $thisAccessor->getTemplate());
-            $repository = new GenericRepository($app['db'], $thisAccessor->getTable());
+        $app->get($route, function (Application $app, Request $req, $_route_params) use ($name, $route, $template, $table) {
+            $response = new TransientResponse($app['twig'], $template);
+            $repository = new GenericRepository($app['db'], $table);
             $app['set'] = $repository->select($_route_params)->fetchAll();
             return $response;
         });

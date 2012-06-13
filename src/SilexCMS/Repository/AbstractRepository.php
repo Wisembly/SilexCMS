@@ -43,6 +43,10 @@ abstract class AbstractRepository
 	
     public function insert($values)
     {
+        if (is_object($values)) {
+            $values = $values->toArray();
+        }
+
         return $this->db->insert($this->table, $values);
     }
 	

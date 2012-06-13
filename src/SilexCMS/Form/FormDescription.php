@@ -10,12 +10,12 @@ use Symfony\Component\Form\AbstractType;
 class FormDescription implements ServiceProviderInterface
 {
     private $name;
-    private $builder;
+    private $type;
     
-    public function __construct($name, AbstractType $builder)
+    public function __construct($name, AbstractType $type)
     {
         $this->name = $name;
-        $this->builder = $builder;
+        $this->type = $type;
     }
     
     public function boot(Application $app)
@@ -24,7 +24,15 @@ class FormDescription implements ServiceProviderInterface
     
     public function register(Application $app)
     {
-        $form = $app[$this->name] = $app['form.factory']->createBuilder($this->builder)->getForm();
-        $view = $app[$this->name . '_view'] = $form->createView();
+        $name = $this->name;
+        $type = $this->type;
+
+        $app[$name] = function ($app) use ($nama, $type) {
+            return $app['form.factory']->createBuilder($type)->getForm();
+        };
+
+        $app[$name . '_view'] = function ($app) use ($name, $type) {
+            return $app[$name]->createView();
+        };
     }
 }

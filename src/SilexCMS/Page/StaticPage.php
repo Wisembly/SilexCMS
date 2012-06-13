@@ -12,35 +12,29 @@ use SilexCMS\Response\TransientResponse;
 
 class StaticPage implements ServiceProviderInterface
 {
+    private $name;
     private $route;
     private $template;
     
-    public function __construct($route, $template)
+    public function __construct($name, $route, $template)
     {
+        $this->name = $name;
         $this->route = $route;
         $this->template = $template;
     }
-    
-    public function getRoute()
-    {
-        return $this->route;
-    }
-    
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-    
+
     public function boot(Application $app)
     {
     }
     
     public function register(Application $app)
     {
-        $thisAccessor = $this; // php 5.3 workaround
+        $name = $this->name;
+        $route = $this->route;
+        $template = $this->template;
         
-        $app->get($this->getRoute(), function (Application $app, Request $req) use ($thisAccessor) {
-            return new TransientResponse($app['twig'], $thisAccessor->getTemplate());
-        });
+        $app->get($route, function (Application $app, Request $req) use ($name, $route, $template) {
+            return new TransientResponse($app['twig'], $template);
+        })->bind($name);
     }
 }
