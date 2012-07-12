@@ -16,21 +16,17 @@ class Application extends BaseApplication
     public function __construct($values)
     {
         parent::__construct();
-        
-        foreach ($values as $key => $value) {
-            $this[$key] = $value;
-        }
 
         $this->before(function ($request) {
             $request->getSession()->start();
         });
-        
-        $this->register(new SessionServiceProvider());
-        $this->register(new TwigServiceProvider());
-        $this->register(new DoctrineServiceProvider());
-        $this->register(new UrlGeneratorServiceProvider());
-        $this->register(new TranslationServiceProvider());
-        $this->register(new FormServiceProvider());
-        $this->register(new ValidatorServiceProvider());
+
+        $this->register(new SessionServiceProvider(),      $values);
+        $this->register(new TwigServiceProvider(),         $values);
+        $this->register(new DoctrineServiceProvider(),     $values);
+        $this->register(new UrlGeneratorServiceProvider(), $values);
+        $this->register(new TranslationServiceProvider(),  $values);
+        $this->register(new FormServiceProvider(),         $values);
+        $this->register(new ValidatorServiceProvider(),    $values);
     }
 }
