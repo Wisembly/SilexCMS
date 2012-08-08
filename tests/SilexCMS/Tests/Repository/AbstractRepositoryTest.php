@@ -20,15 +20,15 @@ class AbstractRepositoryTest extends Base
         $repo->insert(array('id' => 2, 'val' => 69));
         $repo->insert(array('id' => 3, 'val' => 1337));
         $res = $repo->findAll();
-        
+
         $sum = 0;
         foreach ($res as $r) {
             $sum += $r['val'];
         }
-        
+
         $this->assertEquals(42 + 69 + 1337, $sum);
     }
-    
+
     public function testInsertAndQuery()
     {
         $repo = $this->getFooRepository();
@@ -38,7 +38,7 @@ class AbstractRepositoryTest extends Base
         $res = $repo->query('SELECT SUM(val) FROM foo')->fetch();
         $this->assertEquals(42 + 69 + 1337, $res[0]);
     }
-    
+
     public function testInsertUpdateAndQuery()
     {
         $repo = $this->getFooRepository();
@@ -49,7 +49,7 @@ class AbstractRepositoryTest extends Base
         $res = $repo->query('SELECT SUM(val) FROM foo')->fetch();
         $this->assertEquals(42 + 1 + 1337, $res[0]);
     }
-    
+
     public function testInsertDeleteAndQuery()
     {
         $repo = $this->getFooRepository();
@@ -60,7 +60,7 @@ class AbstractRepositoryTest extends Base
         $res = $repo->query('SELECT SUM(val) FROM foo')->fetch();
         $this->assertEquals(42 + 1337, $res[0]);
     }
-    
+
     public function testInsertAndSelect()
     {
         $repo = $this->getFooRepository();
@@ -70,7 +70,7 @@ class AbstractRepositoryTest extends Base
         $res = $repo->select(array('id' => 2))->fetch();
         $this->assertEquals(69, $res['val']);
     }
-    
+
     public function testInsertUpdateConditionShortcutAndQuery()
     {
         $repo = $this->getFooRepository();
@@ -81,7 +81,7 @@ class AbstractRepositoryTest extends Base
         $res = $repo->query('SELECT SUM(val) FROM foo')->fetch();
         $this->assertEquals(42 + 1 + 1337, $res[0]);
     }
-    
+
     public function testInsertDeleteConditionShortcutAndQuery()
     {
         $repo = $this->getFooRepository();
@@ -92,7 +92,7 @@ class AbstractRepositoryTest extends Base
         $res = $repo->query('SELECT SUM(val) FROM foo')->fetch();
         $this->assertEquals(42 + 1337, $res[0]);
     }
-    
+
     public function testInsertAndSelectConditionShortcut()
     {
         $repo = $this->getFooRepository();
@@ -102,7 +102,7 @@ class AbstractRepositoryTest extends Base
         $res = $repo->select(2)->fetch();
         $this->assertEquals(69, $res['val']);
     }
-    
+
     public function getFooRepository()
     {
         $app = $this->getApplication();

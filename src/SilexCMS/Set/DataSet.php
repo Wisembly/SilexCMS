@@ -15,7 +15,7 @@ class DataSet implements ServiceProviderInterface
 {
     private $block;
     private $table;
-    
+
     public function __construct($block, $table, $conditions = null)
     {
         $this->block = $block;
@@ -26,16 +26,16 @@ class DataSet implements ServiceProviderInterface
     public function boot(Application $app)
     {
     }
-    
+
     public function register(Application $app)
     {
         $self = $this;
-        
+
         $app->after(function (Request $req, Response $resp) use ($self, $app) {
             $self->filter($app, $resp);
         });
     }
-    
+
     public function filter(Application $app, Response $resp)
     {
         if ($resp instanceof TransientResponse) {

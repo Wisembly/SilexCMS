@@ -15,7 +15,7 @@ class StaticPage implements ServiceProviderInterface
     private $name;
     private $route;
     private $template;
-    
+
     public function __construct($name, $route, $template)
     {
         $this->name = $name;
@@ -26,13 +26,13 @@ class StaticPage implements ServiceProviderInterface
     public function boot(Application $app)
     {
     }
-    
+
     public function register(Application $app)
     {
         $name = $this->name;
         $route = $this->route;
         $template = $this->template;
-        
+
         $app->get($route, function (Application $app, Request $req) use ($name, $route, $template) {
             return new TransientResponse($app['twig'], $template);
         })->bind($name);

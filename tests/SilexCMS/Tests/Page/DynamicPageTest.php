@@ -16,7 +16,7 @@ class DynamicPageTest extends Base
         $stream = $this->getTemplateStream('{{ app.set[0].val }}');
         $app->register(new DynamicPage('/test/{val}', $stream, 'digits'));
         $this->assertEquals('1', $app->handle(Request::create('/test/1'))->getContent());
-        
+
         $app = $this->getApplication();
         $stream = $this->getTemplateStream('{{ app.set[0].val }}');
         $app->register(new DynamicPage('/test/{val}', $stream, 'digits'));
