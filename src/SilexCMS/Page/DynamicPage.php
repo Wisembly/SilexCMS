@@ -17,7 +17,7 @@ class DynamicPage implements ServiceProviderInterface
     private $route;
     private $template;
     private $table;
-    
+
     public function __construct($name, $route, $template, $table)
     {
         $this->name = $name;
@@ -25,22 +25,22 @@ class DynamicPage implements ServiceProviderInterface
         $this->template = $template;
         $this->table = $table;
     }
-    
+
     public function boot(Application $app)
     {
     }
-    
+
     public function register(Application $app)
     {
         $name = $this->name;
         $route = $this->route;
         $template = $this->template;
         $table = $this->table;
-        
+
         $app->get($route, function (Application $app, Request $req, $_route_params) use ($name, $route, $template, $table) {
             $response = new TransientResponse($app['twig'], $template);
             $repository = new GenericRepository($app['db'], $table);
-            $app['set'] = $repository->select($_route_params)->fetchAll();
+            $app['set'] = $repository->select($_route_params);
             return $response;
         });
     }
