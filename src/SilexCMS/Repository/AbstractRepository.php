@@ -13,7 +13,7 @@ abstract class AbstractRepository
         $dbOptions = $this->db->getParams();
 
         if ('pdo_mysql' === $dbOptions['driver'] && isset($dbOptions['charset'])) {
-            $this->query("SET NAMES ' . $dbOptions['charset'] . '");
+            $this->query("SET NAMES '" . $dbOptions['charset'] . "'");
         }
     }
 
