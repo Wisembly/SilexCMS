@@ -10,6 +10,11 @@ abstract class AbstractRepository
     public function __construct($db)
     {
         $this->db = $db;
+        $dbOptions = $this->db->getParams();
+
+        if ('pdo_mysql' === $dbOptions['driver'] && isset($dbOptions['charset'])) {
+            $this->query("SET NAMES ' . $dbOptions['charset'] . '");
+        }
     }
 
     public function query($query, $arguments = array())

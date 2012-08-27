@@ -3,6 +3,7 @@
 namespace SilexCMS\Response;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class TransientResponse extends Response
 {
@@ -38,10 +39,10 @@ class TransientResponse extends Response
         return $this->variables;
     }
 
-    public function prepare($req)
+    public function prepare(Request $request)
     {
         $this->setContent($this->template->render((array) $this->variables));
 
-        return parent::prepare($req);
+        return parent::prepare($request);
     }
 }
