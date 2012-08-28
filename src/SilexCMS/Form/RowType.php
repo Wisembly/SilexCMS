@@ -23,15 +23,18 @@ class RowType extends AbstractType
         foreach ($schemaManager->listTableColumns($this->table) as $column) {
             switch ($column->getType()) {
                 case 'Integer':
-                    $builder->add($column->getName(), 'integer', array('read_only' => $column->getName() === 'id' ? true : false));
+                    $builder->add($column->getName(), 'integer', array(
+                        'read_only' => $column->getName() === 'id' ? true : false,
+                        'required'  => $column->getNotNull(),
+                    ));
                 break;
 
                 case 'String':
-                    $builder->add($column->getName(), 'text');
+                    $builder->add($column->getName(), 'text', array('required' => $column->getNotNull()));
                 break;
 
                 case 'Text':
-                    $builder->add($column->getName(), 'textarea');
+                    $builder->add($column->getName(), 'textarea', array('required' => $column->getNotNull()));
                 break;
             }
         }
