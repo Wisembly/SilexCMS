@@ -19,12 +19,11 @@ class RowType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $schemaManager = $this->container['db']->getSchemaManager();
-        foreach ($schemaManager->listTableColumns($this->table) as $column)
-        {
-            switch ($column->getType())
-            {
+
+        foreach ($schemaManager->listTableColumns($this->table) as $column) {
+            switch ($column->getType()) {
                 case 'Integer':
-                    $builder->add($column->getName(), 'number');
+                    $builder->add($column->getName(), 'integer', array('read_only' => $column->getName() === 'id' ? true : false));
                 break;
 
                 case 'String':
