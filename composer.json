@@ -1,5 +1,5 @@
 {
-    "name" : "balloon/silexcms",
+    "name" : "wisembly/silexcms",
     "type" : "library",
 
     "autoload" : {
