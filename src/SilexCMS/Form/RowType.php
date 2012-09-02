@@ -29,6 +29,10 @@ class RowType extends AbstractType
                     ));
                 break;
 
+                case 'Boolean':
+                    $builder->add($column->getName(), 'checkbox', array('required' => false));
+                break;
+
                 case 'String':
                     $builder->add($column->getName(), 'text', array('required' => $column->getNotNull()));
                 break;

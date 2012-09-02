@@ -2,19 +2,19 @@
 
 namespace SilexCMS\Repository;
 
-abstract class AbstractRepository
+use SilexCMS\Repository\DataMap;
+
+abstract class AbstractRepository extends DataMap
 {
     private $db;
     protected $table;
+    protected $schema;
 
     public function __construct($db)
     {
         $this->db = $db;
-        $dbOptions = $this->db->getParams();
 
-        if ('pdo_mysql' === $dbOptions['driver'] && isset($dbOptions['charset'])) {
-            $this->query("SET NAMES '" . $dbOptions['charset'] . "'");
-        }
+        parent::__construct($db, $this->schema);
     }
 
     public function query($query, $arguments = array())
@@ -52,16 +52,16 @@ abstract class AbstractRepository
             $values = $values->toArray();
         }
 
-        return $this->db->insert($this->table, $values);
+        return $this->db->insert($this->table, $this->mapToDB($values));
     }
 
-    public function update($condition, $values)
+    public function update($values, $condition)
     {
         if (is_numeric($condition)) {
             $condition = array('id' => $condition);
         }
 
-        return $this->db->update($this->table, $values, $condition);
+        return $this->db->update($this->table, $this->mapToDB($values), $condition);
     }
 
     public function delete($condition)
@@ -73,8 +73,13 @@ abstract class AbstractRepository
         return $this->db->delete($this->table, $condition);
     }
 
+    public function fetchAll($query)
+    {
+        return $this->mapFromDb($this->db->fetchAll($query));
+    }
+
     public function findAll()
     {
-        return $this->db->fetchAll("SELECT * FROM {$this->table}");
+        return $this->mapFromDb($this->db->fetchAll("SELECT * FROM {$this->table}"));
     }
 }
