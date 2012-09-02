@@ -14,11 +14,11 @@ class Base extends \PHPUnit_Framework_TestCase
     public function getApplication()
     {
         $app = new Application(array(
-            'db.options' => array( 'driver' => 'pdo_sqlite', 'memory' => true ),
-            'twig.path' => '.',
-            'locale_fallback' => 'en',
-            'translator.messages' => array(),
-            'debug' => true
+            'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
+            'twig.path'             => '.',
+            'locale_fallback'       => 'en',
+            'translator.messages'   => array(),
+            'debug'                 => true
         ));
 
         $this->populateDatabase($app['db']);

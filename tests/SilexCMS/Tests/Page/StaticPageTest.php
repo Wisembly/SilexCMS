@@ -15,7 +15,7 @@ class StaticPageTest extends Base
         $stream = $this->getTemplateStream('Foobar');
 
         $app = $this->getApplication();
-        $app->register(new StaticPage('/toto', $stream));
+        $app->register(new StaticPage('staticpage', '/toto', $stream));
 
         $this->assertEquals('Foobar', $app->handle(Request::create('/toto'))->getContent());
     }

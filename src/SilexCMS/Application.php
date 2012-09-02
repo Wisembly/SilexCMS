@@ -18,7 +18,9 @@ class Application extends BaseApplication
         parent::__construct();
 
         $this->before(function ($request) {
-            $request->getSession()->start();
+            if (!$request->hasSession()) {
+                $request->getSession()->start();
+            }
         });
 
         $this->register(new SessionServiceProvider(),      $values);
