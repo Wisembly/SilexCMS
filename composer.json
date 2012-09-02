@@ -1,6 +1,7 @@
 {
     "name" : "wisembly/silexcms",
-    "type" : "library",
+    "description" : "Ultra lightweight CMS based on top of Silex",
+    "keywords": ["library", "silex", "CMS", "framework"],
 
     "autoload" : {
         "psr-0" : {
@@ -20,5 +21,7 @@
         "symfony/yaml"        : "2.1.*",
         "symfony/validator"   : "2.1.*",
         "twig/twig"           : ">=1.8,<2.0-dev"
-    }
+    },
+
+    "minimum-stability": "dev"
 }
