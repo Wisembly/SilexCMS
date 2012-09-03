@@ -29,7 +29,9 @@ abstract class AbstractRepository extends DataMap
 
     public function findOneBy($condition)
     {
-        return array_shift($this->select($condition));
+        $result = $this->select($condition);
+
+        return array_shift($result);
     }
 
     public function select($condition = null)
