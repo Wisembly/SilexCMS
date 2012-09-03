@@ -25,8 +25,8 @@ $app->register(new SilexCMS\Page\DynamicPage('/product/{slug}', 'product.html.tw
 ```
 
 ```
-{% if app.set | size > 0 %}
-    Our product is called {{ app.set[0].name }} :)
+{% if app.set not none %}
+    Our product is called {{ app.set.name }} :)
 {% else %}
     Product not found :(
 {% endif %}

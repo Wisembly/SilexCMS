@@ -27,6 +27,11 @@ abstract class AbstractRepository extends DataMap
         return $this->db->executeUpdate($query, $arguments);
     }
 
+    public function findOneBy($condition)
+    {
+        return array_shift($this->select($condition));
+    }
+
     public function select($condition = null)
     {
         if (is_null($condition)) {
@@ -43,7 +48,24 @@ abstract class AbstractRepository extends DataMap
             $where = ' WHERE ' . $where;
         }
 
-        return $this->db->executeQuery("SELECT * FROM {$this->table}{$where}", array_values($condition))->fetchAll();
+        return $this->reIndex($this->db->executeQuery("SELECT * FROM {$this->table}{$where}", array_values($condition))->fetchAll());
+    }
+
+    private function reIndex($results)
+    {
+        $indexedArray = array();
+
+        // reindex array only if we have an id field an not a single element
+        if (!isset($results[0]['id']) || sizeof($results) == 1) {
+            return $results;
+        }
+
+        foreach ($results as $result)
+        {
+            $indexedArray[$result['id']] = $result;
+        }
+
+        return $indexedArray;
     }
 
     public function insert($values)
