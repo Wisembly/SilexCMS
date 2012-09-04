@@ -42,6 +42,6 @@ class DynamicPage implements ServiceProviderInterface
             $repository = new GenericRepository($app['db'], $table);
             $app['set'] = $repository->findOneBy($_route_params);
             return $response;
-        });
+        })->bind($name);
     }
 }
