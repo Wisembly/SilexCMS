@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TableType extends AbstractType
 {
-
     public function __construct(Pimple $container, $table)
     {
         $this->container = $container;
@@ -27,5 +26,4 @@ class TableType extends AbstractType
     {
         return 'Table' . ucfirst($this->table);
     }
-
 }

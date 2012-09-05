@@ -2,6 +2,7 @@
 
 use Silex\Application;
 
+use SilexCMS\Form\Form;
 use SilexCMS\Form\TableType;
 use SilexCMS\Response\TransientResponse;
 
@@ -39,14 +40,8 @@ $app->match('/administration/{table}/{id}', function (Application $app, Request 
     }
 
     $repository = new GenericRepository($app['db'], $table);
-
-    if ('new' === $id) {
-        $row = array('row' => array(array_map(function ($val) { return null; }, $repository->getSchema())));
-    } else {
-        $row = array('row' => $repository->fetchAll("SELECT * FROM `{$table}` WHERE id = {$id}", false));
-    }
-
-    $form = $app['form.factory']->create(new TableType($app, $table), $row);
+    $formGenerator = new Form($repository);
+    $form = $app['form.factory']->create(new TableType($app, $table), $formGenerator->getData('new' === $id ? null : $id));
 
     if ($req->getMethod() === 'POST') {
         $form->bindRequest($req);

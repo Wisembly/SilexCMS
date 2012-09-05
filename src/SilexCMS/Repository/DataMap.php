@@ -34,20 +34,22 @@ class DataMap
                 }
             }
 
-            switch ($this->schema[$key]->getType()) {
-                case 'Boolean' :
-                    $value = $value == 1 ;
-                break;
-                case 'Integer' :
-                    $value = (int)$value;
-                break;
-                case 'Array' :
-                case 'Object':
-                    $value = unserialize($value);
-                break;
-            }
+            if (isset($this->schema[$key])) {
+                switch ($this->schema[$key]->getType()) {
+                    case 'Boolean' :
+                        $value = $value == 1 ;
+                    break;
+                    case 'Integer' :
+                        $value = (int)$value;
+                    break;
+                    case 'Array' :
+                    case 'Object':
+                        $value = unserialize($value);
+                    break;
+                }
 
-            $mappedData[$key] = $value;
+                $mappedData[$key] = $value;
+            }
         }
 
         return $mappedData;

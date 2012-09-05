@@ -23,6 +23,11 @@ class GenericRepository extends AbstractRepository
         parent::__construct($db);
     }
 
+    public function getTable()
+    {
+        return $this->table;
+    }
+
     public function getSchema()
     {
         return $this->schema;
