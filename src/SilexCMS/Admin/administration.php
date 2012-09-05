@@ -20,7 +20,7 @@ $app->match('/administration/{table}', function (Application $app, Request $req,
 
     foreach ($rows as $row) {
         $data[] = array_map(function($val) {
-            return is_string($val) ? substr(strip_tags($val), 0, 47) . '...' : $val;
+            return is_string($val) && strlen($val) > 50 ? substr(strip_tags($val), 0, 47) . '...' : $val;
         }, $row);
     }
 
@@ -43,7 +43,7 @@ $app->match('/administration/{table}/{id}', function (Application $app, Request 
     if ('new' === $id) {
         $row = array('row' => array(array_map(function ($val) { return null; }, $repository->getSchema())));
     } else {
-        $row = array('row' => $repository->fetchall("SELECT * FROM `{$table}` WHERE id = {$id}"));
+        $row = array('row' => $repository->fetchAll("SELECT * FROM `{$table}` WHERE id = {$id}", false));
     }
 
     $form = $app['form.factory']->create(new TableType($app, $table), $row);

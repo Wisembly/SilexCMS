@@ -15,17 +15,17 @@ class DataMap
         $this->schema = $schema;
     }
 
-    public function mapFromDb($data)
+    public function mapFromDb($data, $mapForeigns = true)
     {
         $mappedData = array();
 
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $mappedData[$key] = $this->mapFromDb($value);
+                $mappedData[$key] = $this->mapFromDb($value, $mapForeigns);
                 continue;
             }
 
-            if (false !== strpos($key, '_id')) {
+            if ($mapForeigns && false !== strpos($key, '_id')) {
                 $table = str_replace('_id', '', $key);
 
                 if (false !== $foreign = $this->mapForeignKeys($table, $this->schema[$key], $value)) {

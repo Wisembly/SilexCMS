@@ -80,13 +80,13 @@ abstract class AbstractRepository extends DataMap
         return $this->db->delete($this->table, $condition);
     }
 
-    public function fetchAll($query)
+    public function fetchAll($query, $mapForeigns = true)
     {
-        return $this->mapFromDb($this->db->fetchAll($query));
+        return $this->mapFromDb($this->db->fetchAll($query), false);
     }
 
-    public function findAll()
+    public function findAll($mapForeigns = true)
     {
-        return $this->mapFromDb($this->db->fetchAll("SELECT * FROM {$this->table}"));
+        return $this->mapFromDb($this->db->fetchAll("SELECT * FROM {$this->table}"), $mapForeigns);
     }
 }
