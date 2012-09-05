@@ -61,7 +61,7 @@ $app->match('/administration/{table}/{id}', function (Application $app, Request 
                 if ('new' === $id) {
                     $repository->insert($row);
 
-                    return $app->redirect($app['url_generator']->generate('administration', array('table' => $table)));
+                    return $app->redirect($app['url_generator']->generate('administration_table', array('table' => $table)));
                 } else {
                     $repository->update($row, $where);
                 }
