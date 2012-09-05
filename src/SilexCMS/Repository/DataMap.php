@@ -2,6 +2,8 @@
 
 namespace SilexCMS\Repository;
 
+use Doctrine\DBAL\Types\Type;
+
 class DataMap
 {
     private $db;
@@ -21,6 +23,15 @@ class DataMap
             if (is_array($value)) {
                 $mappedData[$key] = $this->mapFromDb($value);
                 continue;
+            }
+
+            if (false !== strpos($key, '_id')) {
+                $table = str_replace('_id', '', $key);
+
+                if (false !== $foreign = $this->mapForeignKeys($table, $this->schema[$key], $value)) {
+                    $value = $foreign;
+                    $this->schema[$key]->setType(Type::getType('string'));
+                }
             }
 
             switch ($this->schema[$key]->getType()) {
@@ -64,5 +75,38 @@ class DataMap
         }
 
         return $mappedData;
+    }
+
+    public function mapForeignKeys($table, $column, $id = null)
+    {
+        try {
+            $relatedRows = $this->db->executeQuery("SELECT * FROM $table ORDER BY id ASC")->fetchAll();
+
+            if (isset($relatedRows[0]['name'])) {
+                $foreign = 'name';
+            } else {
+                $comments = json_decode($column->getComment(), true);
+
+                if (!empty($comments) && is_array($comments)) {
+                    $foreign = $foreign['foreign'];
+                } else {
+                    $foreign = 'id';
+                }
+            }
+
+            $choices = array();
+
+            foreach ($relatedRows as $relatedRow) {
+                if (null !== $id && $relatedRow['id'] == $id) {
+                    return $relatedRow[$foreign];
+                }
+
+                $choices[$relatedRow['id']] = $relatedRow[$foreign];
+            }
+
+            return $choices;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

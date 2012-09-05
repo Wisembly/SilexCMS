@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Doctrine\DBAL\Types\Type;
+use SilexCMS\Repository\DataMap;
 
 class RowType extends AbstractType
 {
@@ -23,18 +24,16 @@ class RowType extends AbstractType
 
         foreach ($schemaManager->listTableColumns($this->table) as $column) {
 
+            // here we try to display nicely database relations w/ foreign keys
             if (false !== strpos($column->getName(), '_id')) {
                 $table = str_replace('_id', '', $column->getName());
 
-                try {
-                    $ids = $this->container['db']->executeQuery("SELECT id FROM $table ORDER BY id ASC")->fetchAll();
-                    $column->setType(Type::getType('array'));
-                    $choices = array();
+                $dataMap = new DataMap($this->container['db'], $schemaManager);
+                $choices = $dataMap->mapForeignKeys($table, $column);
 
-                    foreach ($ids as $id) {
-                        $choices[$id[0]] = $id[0];
-                    }
-                } catch (\Exception $e) {}
+                if (is_array($choices)) {
+                    $column->setType(Type::getType('array'));
+                }
             }
 
             switch ($column->getType()) {

@@ -20,7 +20,7 @@ class TableType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('rows', 'collection', array('type' => new RowType($this->container, $this->table)));
+        $builder->add('row', 'collection', array('type' => new RowType($this->container, $this->table)));
     }
 
     public function getName()
