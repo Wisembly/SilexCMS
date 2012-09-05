@@ -5,8 +5,6 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use SilexCMS\Response\TransientResponse;
 
-$app->register(new SilexCMS\Security\Firewall('security', require __DIR__ . '/../config/users.php'));
-
 $app->match('/login', function (Application $app, Request $req) {
     $security = $app['security'];
 
