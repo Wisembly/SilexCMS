@@ -1,0 +1,31 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <header class="main-header container">
+        <h1><small>Manage your website</small> Administration Hub</h1>
+    </header>
+
+    <div class="container">
+        <div class="bread-crumb">
+            <a class="catcher btn btn-small" href="{{path('logout')}}">Logout</a>
+            <a href="/">Home</a> > Administration Hub
+        </div>
+        <div class="row content-wrapper">
+            <div class="main-content contact">
+                <div class="row hub-row">
+                    <div class="span12">
+                        <h3>Here is what you can manage : </h3>
+                        <ul class="unstyled">
+                            {% for table in tables %}
+                                <li>
+                                    <strong>{{ table | title }}</strong>
+                                    <a href="{{ path('administration_table', {'table' : table}) }}"   title="{{ table | title }}" class="btn btn-primary">  Let's go    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

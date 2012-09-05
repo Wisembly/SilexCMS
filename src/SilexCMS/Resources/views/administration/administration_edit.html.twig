@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block field_row %}
+{% spaceless %}
+    <div class="form_row">
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        <blink>{{ form_widget(form) }}</blink>
+    </div>
+{% endspaceless %}
+{% endblock field_row %}
+
+{% block filters %}{% endblock %}
+
+{% block content %}
+    <header class="main-header container">
+        <h1><small>Manage your website</small> {{ table|title }} #{{ id }}</h1>
+    </header>
+
+    <div class="container">
+        <div class="bread-crumb">
+            <a class="catcher btn btn-small" href="{{path('logout')}}">Logout</a>
+            <a href="/">Home</a> > <a href="{{path('administration_hub') }}">Administration Hub</a> > <a href="{{ path('administration_table', {'table': table}) }}">{{ table|title }}</a> > #{{ id }}
+        </div>
+        <div class="row content-wrapper">
+            <div class="main-content contact">
+                <div class="row">
+                    <div class="span12">
+                        <form method="post">
+                            {{ form_widget(form) }}
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-large btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

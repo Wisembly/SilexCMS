@@ -31,4 +31,10 @@ class Application extends BaseApplication
         $this->register(new FormServiceProvider(),         $values);
         $this->register(new ValidatorServiceProvider(),    $values);
     }
+
+    public static function loadActions($app)
+    {
+        require_once __DIR__ . '/Security/security.php';
+        require_once __DIR__ . '/Admin/administration.php';
+    }
 }
