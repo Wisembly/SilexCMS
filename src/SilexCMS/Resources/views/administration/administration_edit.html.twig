@@ -1,20 +1,5 @@
-{% extends 'layout.html.twig' %}
-
-{% form_theme form _self %}
-
-{% block field_row %}
-{% spaceless %}
-    <div class="form_row">
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-        <blink>{{ form_widget(form) }}</blink>
-    </div>
-{% endspaceless %}
-{% endblock field_row %}
-
-{% block filters %}{% endblock %}
-
-{% block content %}
+<html>
+<body>
     <header class="main-header container">
         <h1><small>Manage your website</small> {{ table|title }} #{{ id }}</h1>
     </header>
@@ -39,4 +24,5 @@
             </div>
         </div>
     </div>
-{% endblock %}
+</body>
+</html>

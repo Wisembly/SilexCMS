@@ -1,14 +1,13 @@
-{% extends 'layout.html.twig' %}
-
-{% block content %}
+<html>
+<body>
     <header class="main-header container">
-        <h1><small>Manage your website</small> {{ table|title }}</h1>
+        <h1><small>Manage your website</small>{{ table }}</h1>
     </header>
 
     <div class="container">
         <div class="bread-crumb">
             <a class="catcher btn btn-small" href="{{path('logout')}}">Logout</a>
-            <a href="/">Home</a> > <a href="{{path('administration_hub') }}">Administration Hub</a> > {{ table|title }}
+            <a href="/">Home</a> > <a href="{{path('administration_hub') }}">Administration Hub</a> > {{ table }}
         </div>
         <div class="row content-wrapper">
             <div class="main-content contact">
@@ -41,4 +40,5 @@
             </div>
         </div>
     </div>
-{% endblock %}
+</body>
+</html>

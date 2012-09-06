@@ -13,7 +13,7 @@ class TransientResponse extends Response
 
     public function __construct($twig, $template, $variables = null)
     {
-        $content = @stream_get_contents($template);
+        $content = @file_get_contents($template);
 
         if ($content !== false) {
             $loader = $twig->getLoader();

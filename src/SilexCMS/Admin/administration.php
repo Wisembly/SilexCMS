@@ -17,7 +17,7 @@ $app->match('/administration/{table}', function (Application $app, Request $req,
 
     $repository = new GenericRepository($app['db'], $table);
     $schema = $repository->getSchema();
-    $rows = $repository->findAll();
+    $rows = $repository->findAll(true);
 
     foreach ($rows as $row) {
         $data[] = array_map(function($val) {
@@ -25,7 +25,7 @@ $app->match('/administration/{table}', function (Application $app, Request $req,
         }, $row);
     }
 
-    return new TransientResponse($app['twig'], 'administration/administration_table.html.twig', array('table' => $table, 'fields' => $schema, 'rows' => $data));
+    return new TransientResponse($app['twig'], $app['silexcms.template.loader']->load('administration/administration_table.html.twig'), array('table' => $table, 'fields' => $schema, 'rows' => $data));
 })
 ->bind('administration_table');
 
@@ -64,7 +64,7 @@ $app->match('/administration/{table}/{id}', function (Application $app, Request 
         }
     }
 
-    return new TransientResponse($app['twig'], 'administration/administration_edit.html.twig', array(
+    return new TransientResponse($app['twig'], $app['silexcms.template.loader']->load('administration/administration_edit.html.twig'), array(
         'table' => $table,
         'id'    => $id,
         'form'  => $form->createView()
@@ -85,6 +85,6 @@ $app->match('/administration', function(Application $app, Request $req) {
         $listTables[] = array_shift($table);
     }
 
-    return new TransientResponse($app['twig'], 'administration/administration_hub.html.twig', array('tables' => $listTables));
+    return new TransientResponse($app['twig'], $app['silexcms.template.loader']->load('administration/administration_hub.html.twig'), array('tables' => $listTables));
 })
 ->bind('administration_hub');

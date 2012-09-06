@@ -27,14 +27,14 @@ abstract class AbstractRepository extends DataMap
         return $this->db->executeUpdate($query, $arguments);
     }
 
-    public function findOneBy($condition, $mapForeigns = true)
+    public function findOneBy($condition, $mapForeigns = false)
     {
         $result = $this->select($condition, $mapForeigns);
 
         return array_shift($result);
     }
 
-    public function select($condition = null, $mapForeigns = true)
+    public function select($condition = null, $mapForeigns = false)
     {
         if (is_null($condition)) {
             $condition = array();
@@ -80,12 +80,12 @@ abstract class AbstractRepository extends DataMap
         return $this->db->delete($this->table, $condition);
     }
 
-    public function fetchAll($query, $mapForeigns = true)
+    public function fetchAll($query, $mapForeigns = false)
     {
         return $this->mapFromDb($this->db->fetchAll($query), false);
     }
 
-    public function findAll($mapForeigns = true)
+    public function findAll($mapForeigns = false)
     {
         return $this->mapFromDb($this->db->fetchAll("SELECT * FROM {$this->table}"), $mapForeigns);
     }

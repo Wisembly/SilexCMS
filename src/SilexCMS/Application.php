@@ -10,6 +10,8 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use SilexCMS\Security\Firewall;
+use SilexCMS\Response\TemplateLoader;
 
 class Application extends BaseApplication
 {
@@ -32,8 +34,14 @@ class Application extends BaseApplication
         $this->register(new ValidatorServiceProvider(),    $values);
     }
 
-    public static function loadActions($app)
+    public static function loadActions($app, array $options = array())
     {
+        if (isset($options['security'])) {
+            $app->register(new Firewall('security', require $options['security']));
+        }
+
+        $app->register(new TemplateLoader('silexcms.template.loader'));
+
         require_once __DIR__ . '/Security/security.php';
         require_once __DIR__ . '/Admin/administration.php';
     }
