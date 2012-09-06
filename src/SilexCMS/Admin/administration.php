@@ -60,6 +60,9 @@ $app->match('/administration/{table}/{id}', function (Application $app, Request 
                 } else {
                     $repository->update($row, $where);
                 }
+
+                // cache strategy. Update cache version
+                $app['silexcms.cache.manager']->update();
             }
         }
     }

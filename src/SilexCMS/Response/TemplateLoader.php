@@ -3,7 +3,6 @@
 namespace SilexCMS\Response;
 
 use Silex\Application;
-
 use Silex\ServiceProviderInterface;
 
 class TemplateLoader implements ServiceProviderInterface

@@ -20,9 +20,9 @@ $app->match('/login', function (Application $app, Request $req) {
         }
     }
 
-    return new TransientResponse($app['twig'], $app['silexcms.template.loader']->load('security/login.htmdl.twig'), array('error' => isset($error) ? $error : null));
+    return new TransientResponse($app['twig'], $app['silexcms.template.loader']->load('security/login.html.twig'), array('error' => isset($error) ? $error : null));
 })
-->bind('login');
+->bind('administration_login');
 
 $app->get('/logout', function (Application $app, Request $req) {
     $app['security']->unbind();

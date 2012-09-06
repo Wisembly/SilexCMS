@@ -12,6 +12,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use SilexCMS\Security\Firewall;
 use SilexCMS\Response\TemplateLoader;
+use SilexCMS\Cache\CacheManager;
 
 class Application extends BaseApplication
 {
@@ -34,13 +35,17 @@ class Application extends BaseApplication
         $this->register(new ValidatorServiceProvider(),    $values);
     }
 
-    public static function loadActions($app, array $options = array())
+    public static function loadCore($app, array $options = array())
     {
         if (isset($options['security'])) {
             $app->register(new Firewall('security', require $options['security']));
         }
 
         $app->register(new TemplateLoader('silexcms.template.loader'));
+        $app->register(new CacheManager('silexcms.cache.manager', array(
+            'active'    => !$app['debug'],
+            'type'      => isset($app['cache.type']) ? $app['cache.type'] : 'array',
+        )));
 
         require_once __DIR__ . '/Security/security.php';
         require_once __DIR__ . '/Admin/administration.php';

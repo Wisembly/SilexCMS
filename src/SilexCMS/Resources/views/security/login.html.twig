@@ -16,7 +16,7 @@
                         {% if error is not none %}
                             <div class="alert alert-error">{{ error }}</div>
                         {% endif %}
-                        <form action="{{ path('login') }}" method="post">
+                        <form action="{{ path('administration_login') }}" method="post">
                             <label>Username :<input type="text" name="_username" id="username" /></label><br />
                             <label>Password : <input type="password" name="_password" /></label><br />
                             <input type="submit" value="Let's rock" class="btn btn-large btn-primary" />
