@@ -8,10 +8,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     private $app;
 
-    public function __construct()
+    public function setUp()
     {
-        parent::__construct();
-
         $this->app = new Application(array());
     }
 

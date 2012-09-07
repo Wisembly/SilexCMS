@@ -21,7 +21,14 @@ class TransientResponse extends Response
             $this->template = $twig->loadTemplate($content);
             $twig->setLoader($loader);
         } else {
-            $this->template = $twig->loadTemplate($template);
+            try {
+                $this->template = $twig->loadTemplate($template);
+            } catch (\Exception $e) {
+                $loader = $twig->getLoader();
+                $twig->setLoader(new \Twig_Loader_String());
+                $this->template = $twig->loadTemplate($template);
+                $twig->setLoader($loader);
+            }
         }
 
         $this->variables = (object) $variables;

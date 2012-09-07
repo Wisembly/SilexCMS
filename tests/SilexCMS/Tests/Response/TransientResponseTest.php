@@ -22,15 +22,14 @@ class TransientResponseTest extends Base
         $this->assertEquals(file_get_contents('composer.json'), $app->handle(Request::create('/file'))->getContent());
     }
 
-    public function testLoadFromStream()
+    public function testLoadFromTemplate()
     {
         $app = $this->getApplication();
 
         $app->get('/stream', function (Application $app) {
-            $stream = fopen('data://text/plain,Foobar', 'r');
-            return new TransientResponse($app['twig'], $stream);
+            return new TransientResponse($app['twig'], 'foo.html.twig');
         });
 
-        $this->assertEquals('Foobar', $app->handle(Request::create('/stream'))->getContent());
+        $this->assertEquals('bar', $app->handle(Request::create('/stream'))->getContent());
     }
 }

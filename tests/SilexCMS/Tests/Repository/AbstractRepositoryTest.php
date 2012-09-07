@@ -45,7 +45,7 @@ class AbstractRepositoryTest extends Base
         $repo->insert(array('id' => 1, 'val' => 42));
         $repo->insert(array('id' => 2, 'val' => 69));
         $repo->insert(array('id' => 3, 'val' => 1337));
-        $repo->update(array('id' => 2), array('val' => 1));
+        $repo->update(array('val' => 1), array('id' => 2));
         $res = $repo->query('SELECT SUM(val) FROM foo')->fetch();
         $this->assertEquals(42 + 1 + 1337, $res[0]);
     }
@@ -67,8 +67,8 @@ class AbstractRepositoryTest extends Base
         $repo->insert(array('id' => 1, 'val' => 42));
         $repo->insert(array('id' => 2, 'val' => 69));
         $repo->insert(array('id' => 3, 'val' => 1337));
-        $res = $repo->select(array('id' => 2))->fetch();
-        $this->assertEquals(69, $res['val']);
+        $res = $repo->select(array('id' => 2));
+        $this->assertEquals(69, $res[0]['val']);
     }
 
     public function testInsertUpdateConditionShortcutAndQuery()
@@ -77,7 +77,7 @@ class AbstractRepositoryTest extends Base
         $repo->insert(array('id' => 1, 'val' => 42));
         $repo->insert(array('id' => 2, 'val' => 69));
         $repo->insert(array('id' => 3, 'val' => 1337));
-        $repo->update(2, array('val' => 1));
+        $repo->update(array('val' => 1), 2);
         $res = $repo->query('SELECT SUM(val) FROM foo')->fetch();
         $this->assertEquals(42 + 1 + 1337, $res[0]);
     }
@@ -99,8 +99,8 @@ class AbstractRepositoryTest extends Base
         $repo->insert(array('id' => 1, 'val' => 42));
         $repo->insert(array('id' => 2, 'val' => 69));
         $repo->insert(array('id' => 3, 'val' => 1337));
-        $res = $repo->select(2)->fetch();
-        $this->assertEquals(69, $res['val']);
+        $res = $repo->select(2);
+        $this->assertEquals(69, $res[0]['val']);
     }
 
     public function getFooRepository()

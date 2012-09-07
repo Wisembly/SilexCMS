@@ -1,4 +1,6 @@
+phpunit.xml
 /vendor/*
 /composer.phar
 /composer.lock
+/web/coverage/*
 .DS_Store

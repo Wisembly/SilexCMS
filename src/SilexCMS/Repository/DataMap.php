@@ -47,9 +47,9 @@ class DataMap
                         $value = unserialize($value);
                     break;
                 }
-
-                $mappedData[$key] = $value;
             }
+
+            $mappedData[$key] = $value;
         }
 
         return $mappedData;
@@ -57,6 +57,10 @@ class DataMap
 
     public function mapToDb($data)
     {
+        if (empty($this->schema)) {
+            return $data;
+        }
+
         $mappedData = array();
 
         foreach ($data as $key => $value) {

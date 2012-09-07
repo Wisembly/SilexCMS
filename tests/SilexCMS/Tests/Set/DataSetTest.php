@@ -16,7 +16,7 @@ class DataSetTest extends Base
         $app = $this->getApplication();
 
         $app->register(new DataSet('letters', 'digits')); // I LIED !
-        $app->register(new StaticPage('/dataset', $this->getTemplateStream('{% block letters %}{% for f in app.letters %}{{ f.val }}{% endfor %}{% endblock %}')));
+        $app->register(new StaticPage('static_page', '/dataset', $this->getTemplateStream('{% block letters %}{% for f in app.letters %}{{ f.val }}{% endfor %}{% endblock %}')));
 
         $request = Request::create('/dataset');
         $response = $app->handle($request);
@@ -29,7 +29,7 @@ class DataSetTest extends Base
         $app = $this->getApplication();
 
         $app->register(new DataSet('letters', 'letters'));
-        $app->register(new StaticPage('/dataset', $this->getTemplateStream('there is no block level')));
+        $app->register(new StaticPage('static_page', '/dataset', $this->getTemplateStream('there is no block level')));
 
         $app->handle(Request::create('/dataset'));
 

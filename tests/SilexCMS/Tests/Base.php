@@ -8,6 +8,7 @@ class Base extends \PHPUnit_Framework_TestCase
 {
     public function getTemplateStream($text)
     {
+        return $text;
         return fopen('data://text/plain,' . $text, 'r');
     }
 
@@ -15,7 +16,7 @@ class Base extends \PHPUnit_Framework_TestCase
     {
         $app = new Application(array(
             'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
-            'twig.path'             => '.',
+            'twig.path'             => __DIR__ . '/Resources/views',
             'locale_fallback'       => 'en',
             'translator.messages'   => array(),
             'debug'                 => true
@@ -37,5 +38,13 @@ class Base extends \PHPUnit_Framework_TestCase
         $db->insert('digits', array('val' => '1'));
         $db->insert('digits', array('val' => '2'));
         $db->insert('digits', array('val' => '3'));
+
+        $db->executeQuery('CREATE TABLE category (id int, name char)');
+        $db->insert('category', array('id' => 1, 'name' => 'sci-fi'));
+        $db->insert('category', array('id' => 2, 'name' => 'fantasy'));
+
+        $db->executeQuery('CREATE TABLE book (id int, name char, category_id int)');
+        $db->insert('book', array('id' => 1, 'name' => 'Lord Of The Rings', 'category_id' => 2));
+        $db->insert('book', array('id' => 2, 'name' => 'Dune', 'category_id' => 1));
     }
 }
