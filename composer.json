@@ -16,6 +16,7 @@
         "silex/silex"         : "1.0.*",
         "symfony/form"        : "2.1.*",
         "symfony/twig-bridge" : "2.1.*",
+        "twig/extensions"     : "dev-master",
         "symfony/translation" : "2.1.*",
         "symfony/config"      : "2.1.*",
         "symfony/yaml"        : "2.1.*",

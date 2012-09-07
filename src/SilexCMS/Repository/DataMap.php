@@ -57,24 +57,22 @@ class DataMap
 
     public function mapToDb($data)
     {
-        if (empty($this->schema)) {
-            return $data;
-        }
-
         $mappedData = array();
 
         foreach ($data as $key => $value) {
-            switch ($this->schema[$key]->getType()) {
-                case 'Boolean' :
-                    $value = $value ? 1 : 0 ;
-                break;
-                case 'Integer' :
-                    $value = (int)$value;
-                break;
-                case 'Array' :
-                case 'Object':
-                    $value = serialize($value);
-                break;
+            if (isset($this->schema[$key])) {
+                switch ($this->schema[$key]->getType()) {
+                    case 'Boolean' :
+                        $value = $value ? 1 : 0 ;
+                    break;
+                    case 'Integer' :
+                        $value = (int)$value;
+                    break;
+                    case 'Array' :
+                    case 'Object':
+                        $value = serialize($value);
+                    break;
+                }
             }
 
             $mappedData[$key] = $value;

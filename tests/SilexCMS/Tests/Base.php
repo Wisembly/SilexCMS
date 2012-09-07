@@ -9,7 +9,6 @@ class Base extends \PHPUnit_Framework_TestCase
     public function getTemplateStream($text)
     {
         return $text;
-        return fopen('data://text/plain,' . $text, 'r');
     }
 
     public function getApplication()

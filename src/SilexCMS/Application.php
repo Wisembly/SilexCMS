@@ -13,6 +13,7 @@ use Silex\Provider\ValidatorServiceProvider;
 use SilexCMS\Security\Firewall;
 use SilexCMS\Response\TemplateLoader;
 use SilexCMS\Cache\CacheManager;
+use SilexCMS\Twig\Extension\ForeignKeyExtension;
 
 class Application extends BaseApplication
 {
@@ -38,7 +39,7 @@ class Application extends BaseApplication
     public static function loadCore($app, array $options = array())
     {
         if (isset($options['security'])) {
-            $app->register(new Firewall('security', require $options['security']));
+            $app->register(new Firewall('security', $options['security']));
         }
 
         $app->register(new TemplateLoader('silexcms.template.loader'));
