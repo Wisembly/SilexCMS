@@ -39,6 +39,7 @@ class DynamicPage implements ServiceProviderInterface
 
         $app->get($route, function (Application $app, Request $req, $_route_params) use ($name, $route, $template, $table) {
             $repository = new GenericRepository($app['db'], $table);
+            $app['silexcms.dynamic.route'] = array('name' => $name, 'route' => $route, 'table' => $table, 'route_params' => $_route_params);
             $app['set'] = $repository->findOneBy($_route_params);
             $response = new TransientResponse($app['twig'], $template);
             return $response;
