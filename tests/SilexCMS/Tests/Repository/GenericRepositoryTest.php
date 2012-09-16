@@ -32,6 +32,20 @@ class GenericRepositoryTest extends Base
         $this->assertEquals('123', implode($vals));
     }
 
+    public function testBookTable()
+    {
+        $repository = $this->getRepository('book');
+
+        $repository->insert(array('id' => 3, 'name' => 'The Hobbit', 'category_id' => 2));
+
+        $vals = array();
+        foreach ($repository->findAll(true) as $res) {
+            $vals[] = $res['category_id'];
+        }
+
+        $this->assertEquals('fantasy, sci-fi', implode(', ', array_unique($vals)));
+    }
+
     public function getRepository($repository)
     {
         $app = $this->getApplication();
