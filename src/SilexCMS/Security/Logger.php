@@ -47,5 +47,4 @@ class Logger
     {
         return $this->username;
     }
-
 }

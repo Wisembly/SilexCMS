@@ -105,7 +105,7 @@ class AbstractRepositoryTest extends Base
 
     public function getFooRepository()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
         $app['db']->executeQuery('CREATE TABLE foo (id int, val int)');
         return new FooRepository($app['db']);
     }

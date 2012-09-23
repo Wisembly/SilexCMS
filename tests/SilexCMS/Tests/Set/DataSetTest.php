@@ -13,7 +13,7 @@ class DataSetTest extends Base
 {
     public function testRegisterAndRender()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
 
         $app->register(new DataSet('letters', 'digits')); // I LIED !
         $app->register(new StaticPage('static_page', '/dataset', $this->getTemplateStream('{% block letters %}{% for f in app.letters %}{{ f.val }}{% endfor %}{% endblock %}')));
@@ -26,7 +26,7 @@ class DataSetTest extends Base
 
     public function testRegisterAndLazyLoading()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
 
         $app->register(new DataSet('letters', 'letters'));
         $app->register(new StaticPage('static_page', '/dataset', $this->getTemplateStream('there is no block level')));

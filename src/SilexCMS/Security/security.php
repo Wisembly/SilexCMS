@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use SilexCMS\Response\TransientResponse;
 
 $app->match('/login', function (Application $app, Request $req) {
-    $security = $app['security'];
+    $security = $app['silexcms.security'];
 
     if (null !== $security->getUserName()) {
         return $app->redirect($app['url_generator']->generate('administration_hub'));
@@ -25,7 +25,7 @@ $app->match('/login', function (Application $app, Request $req) {
 ->bind('administration_login');
 
 $app->get('/logout', function (Application $app, Request $req) {
-    $app['security']->unbind();
+    $app['silexcms.security']->unbind();
     return $app->redirect($app['url_generator']->generate('index'));
 })
 ->bind('logout');

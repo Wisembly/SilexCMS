@@ -13,7 +13,7 @@ class TemplateLoaderTest extends Base
 {
     public function testLoad()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
 
         $app::loadCore($app);
 

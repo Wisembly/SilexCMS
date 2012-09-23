@@ -2,16 +2,17 @@
 
 namespace SilexCMS\Tests;
 
+use Silex\WebTestCase;
 use SilexCMS\Application;
 
-class Base extends \PHPUnit_Framework_TestCase
+class Base extends WebTestCase
 {
     public function getTemplateStream($text)
     {
         return $text;
     }
 
-    public function getApplication()
+    public function createApplication()
     {
         $app = new Application(array(
             'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
@@ -21,6 +22,8 @@ class Base extends \PHPUnit_Framework_TestCase
             'debug'                 => true
         ));
 
+        // simulate sessions for tests
+        $app['session.test'] = true;
         $this->populateDatabase($app['db']);
 
         return $app;

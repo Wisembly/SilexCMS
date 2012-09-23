@@ -11,7 +11,7 @@ use SilexCMS\Repository\GenericRepository;
 
 $app->match('/administration/{table}', function (Application $app, Request $req, $table) {
 
-    if (is_null($app['security']->getUsername())) {
+    if (is_null($app['silexcms.security']->getUsername())) {
         return $app->redirect($app['url_generator']->generate('index'));
     }
 
@@ -31,7 +31,7 @@ $app->match('/administration/{table}', function (Application $app, Request $req,
 
 $app->match('/administration/{table}/{id}', function (Application $app, Request $req, $table, $id) {
 
-    if (is_null($app['security']->getUsername())) {
+    if (is_null($app['silexcms.security']->getUsername())) {
         return $app->redirect($app['url_generator']->generate('index'));
     }
 
@@ -77,7 +77,7 @@ $app->match('/administration/{table}/{id}', function (Application $app, Request 
 
 $app->match('/administration', function(Application $app, Request $req) {
 
-    if (is_null($app['security']->getUsername())) {
+    if (is_null($app['silexcms.security']->getUsername())) {
         return $app->redirect($app['url_generator']->generate('index'));
     }
 

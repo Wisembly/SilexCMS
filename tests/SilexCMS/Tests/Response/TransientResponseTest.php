@@ -13,7 +13,7 @@ class TransientResponseTest extends Base
 {
     public function testLoadFromFile()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
 
         $app->get('/file', function (Application $app) {
             return new TransientResponse($app['twig'], 'composer.json');
@@ -24,7 +24,7 @@ class TransientResponseTest extends Base
 
     public function testLoadFromTemplate()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
 
         $app->get('/stream', function (Application $app) {
             return new TransientResponse($app['twig'], 'foo.html.twig');

@@ -12,17 +12,15 @@ class StaticPageTest extends Base
 {
     public function testSolo()
     {
-        $stream = $this->getTemplateStream('Foobar');
-
-        $app = $this->getApplication();
-        $app->register(new StaticPage('staticpage', '/toto', $stream));
+        $app = $this->createApplication();
+        $app->register(new StaticPage('staticpage', '/toto', $this->getTemplateStream('Foobar')));
 
         $this->assertEquals('Foobar', $app->handle(Request::create('/toto'))->getContent());
     }
 
     public function testAdvanced()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
         $app->register(new DataSet('books', 'book'));
         $app->register(new DataSet('categories', 'category'));
         $app->register(new StaticPage('staticpage', '/toto', 'advanced_static_page.html.twig'));

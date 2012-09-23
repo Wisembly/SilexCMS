@@ -39,7 +39,9 @@ class Application extends BaseApplication
     public static function loadCore($app, array $options = array())
     {
         if (isset($options['security'])) {
-            $app->register(new Firewall('security', $options['security']));
+            $app->register(new Firewall('silexcms.security', $options['security']));
+            require_once __DIR__ . '/Security/security.php';
+            require_once __DIR__ . '/Admin/administration.php';
         }
 
         $app->register(new TemplateLoader('silexcms.template.loader'));
@@ -48,7 +50,6 @@ class Application extends BaseApplication
             'type'      => isset($app['cache.type']) ? $app['cache.type'] : 'array',
         )));
 
-        require_once __DIR__ . '/Security/security.php';
-        require_once __DIR__ . '/Admin/administration.php';
+        return $app;
     }
 }

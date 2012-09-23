@@ -48,7 +48,7 @@ class GenericRepositoryTest extends Base
 
     public function getRepository($repository)
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
         return new GenericRepository($app['db'], $repository);
     }
 }

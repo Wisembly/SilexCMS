@@ -10,13 +10,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $app = new Application(array());
-
-        $app::loadCore($app, array(
-            'security' => array('toto' => 'tata')
-        ));
-
-        $this->app = $app;
+        $this->app = new Application(array());
     }
 
     public function testInstanceOf()

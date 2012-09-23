@@ -17,6 +17,7 @@
         "symfony/form"        : "2.1.*",
         "symfony/twig-bridge" : "2.1.*",
         "twig/extensions"     : "dev-master",
+        "symfony/browser-kit" : "2.2.*",
         "symfony/translation" : "2.1.*",
         "symfony/config"      : "2.1.*",
         "symfony/yaml"        : "2.1.*",

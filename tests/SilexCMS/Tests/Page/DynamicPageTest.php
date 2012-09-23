@@ -12,11 +12,11 @@ class DynamicPageTest extends Base
 {
     public function testSolo()
     {
-        $app = $this->getApplication();
+        $app = $this->createApplication();
         $app->register(new DynamicPage('dynamic_page', '/test/{val}', 'test_dynamic_page.html.twig', 'digits'));
         $this->assertEquals('1', $app->handle(Request::create('/test/1'))->getContent());
 
-        $app = $this->getApplication();
+        $app = $this->createApplication();
         $app->register(new DynamicPage('dynamic_page', '/test/{val}', 'test_dynamic_page.html.twig', 'digits'));
         $this->assertEquals('2', $app->handle(Request::create('/test/2'))->getContent());
     }
