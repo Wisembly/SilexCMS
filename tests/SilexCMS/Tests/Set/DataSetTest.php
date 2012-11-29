@@ -16,7 +16,7 @@ class DataSetTest extends Base
         $app = $this->createApplication();
 
         $app->register(new DataSet('letters', 'digits')); // I LIED !
-        $app->register(new StaticPage('static_page', '/dataset', $this->getTemplateStream('{% block letters %}{% for f in app.letters %}{{ f.val }}{% endfor %}{% endblock %}')));
+        $app->register(new StaticPage('static_page', '/dataset', 'dataset.html.twig'));
 
         $request = Request::create('/dataset');
         $response = $app->handle($request);

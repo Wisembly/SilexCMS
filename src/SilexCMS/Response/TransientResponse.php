@@ -13,25 +13,21 @@ class TransientResponse extends Response
 
     public function __construct($twig, $template, $variables = null)
     {
-        $content = @file_get_contents($template);
+        try {
+            $this->template = $twig->loadTemplate($template);
+        } catch (\Exception $e) {
+            $content = @file_get_contents($template);
+            if ($content !== false) {
+                $template = $content;
+            }
 
-        if ($content !== false) {
             $loader = $twig->getLoader();
             $twig->setLoader(new \Twig_Loader_String());
-            $this->template = $twig->loadTemplate($content);
+            $this->template = $twig->loadTemplate($template);
             $twig->setLoader($loader);
-        } else {
-            try {
-                $this->template = $twig->loadTemplate($template);
-            } catch (\Exception $e) {
-                $loader = $twig->getLoader();
-                $twig->setLoader(new \Twig_Loader_String());
-                $this->template = $twig->loadTemplate($template);
-                $twig->setLoader($loader);
-            }
         }
 
-        $this->variables = (object) $variables;
+        $this->variables = $variables;
 
         parent::__construct();
     }
@@ -48,7 +44,9 @@ class TransientResponse extends Response
 
     public function prepare(Request $request)
     {
-        $this->setContent($this->template->render((array) $this->variables));
+        try {
+            $this->setContent($this->template->render((array) $this->variables));
+        } catch (\Exception $e) {}
 
         return parent::prepare($request);
     }
