@@ -6,4 +6,9 @@ php:
 notifications:
   email: false
 
+before_script:
+  # install composer
+  - wget http://getcomposer.org/composer.phar > /dev/null
+  - php composer.phar install --dev
+
 script: phpunit
