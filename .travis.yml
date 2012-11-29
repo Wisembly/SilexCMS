@@ -11,4 +11,4 @@ before_script:
   - wget http://getcomposer.org/composer.phar > /dev/null
   - php composer.phar install --dev
 
-script: phpunit
+script: phpunit --coverage-text
