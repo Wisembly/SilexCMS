@@ -13,9 +13,9 @@ class StaticPageTest extends Base
     public function testSolo()
     {
         $app = $this->createApplication();
-        $app->register(new StaticPage('staticpage', '/toto', $this->getTemplateStream('Foobar')));
+        $app->register(new StaticPage('staticpage', '/toto', 'foo.html.twig'));
 
-        $this->assertEquals('Foobar', $app->handle(Request::create('/toto'))->getContent());
+        $this->assertEquals('bar', $app->handle(Request::create('/toto'))->getContent());
     }
 
     public function testAdvanced()

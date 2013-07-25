@@ -29,7 +29,7 @@ class DataSetTest extends Base
         $app = $this->createApplication();
 
         $app->register(new DataSet('letters', 'letters'));
-        $app->register(new StaticPage('static_page', '/dataset', $this->getTemplateStream('there is no block level')));
+        $app->register(new StaticPage('static_page', '/dataset', 'foo.html.twig'));
 
         $app->handle(Request::create('/dataset'));
 

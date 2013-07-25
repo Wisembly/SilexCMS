@@ -22,6 +22,8 @@ class TransientResponse extends Response
             $content = @file_get_contents($template);
             if ($content !== false) {
                 $template = $content;
+            } else {
+                return $this->handleException(new \Exception("{$template} is not a valid template file"));
             }
 
             $app['twig']->setLoader(new \Twig_Loader_String());
