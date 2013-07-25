@@ -34,7 +34,7 @@ class StaticPage implements ServiceProviderInterface
         $template = $this->template;
 
         $app->get($route, function (Application $app, Request $req) use ($name, $route, $template) {
-            return new TransientResponse($app['twig'], $template);
+            return new TransientResponse($app, $template);
         })->bind($name);
     }
 }

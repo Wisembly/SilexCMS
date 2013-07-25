@@ -16,7 +16,7 @@ class TransientResponseTest extends Base
         $app = $this->createApplication();
 
         $app->get('/file', function (Application $app) {
-            return new TransientResponse($app['twig'], 'composer.json');
+            return new TransientResponse($app, 'composer.json');
         });
 
         $this->assertEquals(file_get_contents('composer.json'), $app->handle(Request::create('/file'))->getContent());
@@ -27,7 +27,7 @@ class TransientResponseTest extends Base
         $app = $this->createApplication();
 
         $app->get('/stream', function (Application $app) {
-            return new TransientResponse($app['twig'], 'foo.html.twig');
+            return new TransientResponse($app, 'foo.html.twig');
         });
 
         $this->assertEquals('bar', $app->handle(Request::create('/stream'))->getContent());
