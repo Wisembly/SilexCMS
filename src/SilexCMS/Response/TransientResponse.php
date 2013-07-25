@@ -18,18 +18,18 @@ class TransientResponse extends Response
 
         try {
             $this->template = $app['twig']->loadTemplate($template);
-        } catch (\Twig_Error_Loader $e) {
+        } catch (\Twig_Error_Loader $exception) {
             $content = @file_get_contents($template);
             if ($content !== false) {
                 $template = $content;
             } else {
-                return $this->handleException(new \Exception("{$template} is not a valid template file"));
+                return $this->handleException($exception);
             }
 
             $app['twig']->setLoader(new \Twig_Loader_String());
             $this->template = $app['twig']->loadTemplate($template);
-        } catch (\Exception $e) {
-            $this->handleException($e);
+        } catch (\Exception $exception) {
+            $this->handleException($exception);
         }
 
         parent::__construct();
