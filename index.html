@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Silexcms by Wisembly</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Silexcms</h1>
+        <p>Silex CMS aiming to create powerful showcase websites</p>
+
+        <p class="view"><a href="https://github.com/Wisembly/SilexCMS">View the Project on GitHub <small>Wisembly/SilexCMS</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/Wisembly/SilexCMS/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Wisembly/SilexCMS/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Wisembly/SilexCMS">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="silexcms" class="anchor" href="#silexcms"><span class="octicon octicon-link"></span></a>SilexCMS</h1>
+
+<h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>This project aims to provide a minimal toolset helping to create corporate websites.
+Using <a href="http://silex.sensiolabs.org/">Silex</a> as primary framework, it includes multiple
+shorthand classes.</p>
+
+<h2>
+<a name="version" class="anchor" href="#version"><span class="octicon octicon-link"></span></a>Version</h2>
+
+<p>0.1.0</p>
+
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>We use SilexCMS for our coroporate website. You could see it live at wisembly.com and
+have a look to github.com/wisembly/wisembly</p>
+
+<h2>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<h3>
+<a name="pages" class="anchor" href="#pages"><span class="octicon octicon-link"></span></a>Pages</h3>
+
+<p>There is two kind of web pages : statics and dynamics.</p>
+
+<p>Static pages does not rely on anything else than their templates. Dynamic ones take
+parameters in their urls, fetch a table, then render the specified template, storing
+the resulting objects in an accessible variable.</p>
+
+<h4>
+<a name="static-page" class="anchor" href="#static-page"><span class="octicon octicon-link"></span></a>Static Page</h4>
+
+<div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SilexCMS\Page\StaticPage</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="s1">'home.html.twig'</span><span class="p">));</span>
+</pre></div>
+
+<h4>
+<a name="dynamic-page" class="anchor" href="#dynamic-page"><span class="octicon octicon-link"></span></a>Dynamic Page</h4>
+
+<div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SilexCMS\Page\DynamicPage</span><span class="p">(</span><span class="s1">'/product/{slug}'</span><span class="p">,</span> <span class="s1">'product.html.twig'</span><span class="p">));</span>
+</pre></div>
+
+<pre><code>{% if app.set not none %}
+    Our product is called {{ app.set.name }} :)
+{% else %}
+    Product not found :(
+{% endif %}
+</code></pre>
+
+<h3>
+<a name="datasets" class="anchor" href="#datasets"><span class="octicon octicon-link"></span></a>DataSets</h3>
+
+<p>Datasets are an easy and handy way to retrieve database data directly in your Twig templates.
+First, register your available DataSets for your application:</p>
+
+<div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">DataSet</span><span class="p">(</span><span class="s1">'twig_name'</span><span class="p">,</span> <span class="s1">'table_name'</span><span class="p">));</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">DataSet</span><span class="p">(</span><span class="s1">'users'</span><span class="p">,</span> <span class="s1">'User'</span><span class="p">));</span>
+</pre></div>
+
+<p>Then, use them in your Twig templates:</p>
+
+<pre><code>{# Tell in your template that you will need users DataSet loaded in app #}
+{% bloc users %}{% endbloc %}
+
+{# Then use it freely in your template in app var #}
+First user name: {{ app.users[0].name }}
+
+Users emails:
+{% for user in app.users %}
+  email: {{ user.email }}
+{% endfor %}
+</code></pre>
+
+<h4>
+<a name="foreign-twig-extension" class="anchor" href="#foreign-twig-extension"><span class="octicon octicon-link"></span></a>Foreign Twig extension</h4>
+
+<p>SilexCMS provides a Twig Extension to retrieve easily a particular object by id
+reference inside a DataSet</p>
+
+<p>First, load Foreign Key Extension</p>
+
+<div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">'twig'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addExtension</span><span class="p">(</span><span class="k">new</span> <span class="nx">\SilexCMS\Twig\Extension\ForeignKeyExtension</span><span class="p">(</span><span class="nv">$app</span><span class="p">));</span>
+</pre></div>
+
+<p>Then, use it that way in your Twig Templates:</p>
+
+<pre><code>{% block books %}{% endblock %}
+{% block categories %}{% endblock %}
+{% set category = foreign(app.categories, app.books[0].category_id) %}
+The 1rst book category is: {{ category.name }}
+</code></pre>
+
+<h3>
+<a name="security" class="anchor" href="#security"><span class="octicon octicon-link"></span></a>Security</h3>
+
+<p>The security classes give a very simple way to identifying some users.</p>
+
+<p>When instanciating a Firewall, you will only have to provide a name and an array
+containing your users authentification infos (where the key will be their usernames
+and values are plain text passwords). A logger instance will be automagically created
+in the <code>app[name]</code> variable.</p>
+
+<p>From then, you can use this logger to check current user state or change it.</p>
+
+<h4>
+<a name="manual-example" class="anchor" href="#manual-example"><span class="octicon octicon-link"></span></a>Manual example</h4>
+
+<div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SilexCMS\Security\Firewall</span><span class="p">(</span><span class="s1">'main'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'user'</span> <span class="o">=&gt;</span> <span class="s1">'pass'</span><span class="p">)));</span>
+
+<span class="nb">var_dump</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">'main'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getUsername</span><span class="p">());</span> <span class="c1">// null</span>
+<span class="nv">$app</span><span class="p">[</span><span class="s1">'main'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">bindUsername</span><span class="p">(</span><span class="s1">'user'</span><span class="p">);</span>
+<span class="nb">var_dump</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">'main'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getUsername</span><span class="p">());</span> <span class="c1">// "user"</span>
+</pre></div>
+
+<h4>
+<a name="request-example" class="anchor" href="#request-example"><span class="octicon octicon-link"></span></a>Request example</h4>
+
+<p>You can also bind requests if they have at least two parameters : <code>_username</code> and
+<code>_password</code>.</p>
+
+<h5>
+<a name="startupphp" class="anchor" href="#startupphp"><span class="octicon octicon-link"></span></a>startup.php</h5>
+
+<div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SilexCMS\Security\Firewall</span><span class="p">(</span><span class="s1">'security'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'user'</span> <span class="o">=&gt;</span> <span class="s1">'pass'</span><span class="p">)));</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SilexCMS\Page\StaticPage</span><span class="p">(</span><span class="s1">'/login'</span><span class="p">,</span> <span class="s1">'login.html.twig'</span><span class="p">));</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SilexCMS\Page\StaticPage</span><span class="p">(</span><span class="s1">'/login/success'</span><span class="p">,</span> <span class="s1">'login/success.html.twig'</span><span class="p">));</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SilexCMS\Page\StaticPage</span><span class="p">(</span><span class="s1">'/login/failure'</span><span class="p">,</span> <span class="s1">'login/failure.html.twig'</span><span class="p">));</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'/post'</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$security</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">'security'</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">bindSession</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getUserName</span><span class="p">()</span> <span class="o">||</span> <span class="nv">$security</span><span class="o">-&gt;</span><span class="na">bindRequest</span><span class="p">(</span><span class="nv">$req</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getUserName</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">'login/success'</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">'login/failure'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h5>
+<a name="loginhtmltwig" class="anchor" href="#loginhtmltwig"><span class="octicon octicon-link"></span></a>login.html.twig</h5>
+
+<div class="highlight"><pre><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/login"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"_password"</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">name=</span><span class="s">"_password"</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</pre></div>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>SilexCMS is licensed under the MIT license.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Wisembly">Wisembly</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
