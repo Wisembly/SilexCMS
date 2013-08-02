@@ -11,7 +11,7 @@ class GenericRepository extends AbstractRepository
 
     public function __construct($db, $table)
     {
-        $this->table = $table;
+        $this->table = mysql_real_escape_string($table);
         $this->schema = $db->getSchemaManager()->listTableColumns($table);
 
         $dbOptions = $db->getParams();

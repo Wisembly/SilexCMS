@@ -1,0 +1,4 @@
+{% block books %}{% endblock %}
+{% block categories %}{% endblock %}
+{% set category = foreign(app.categories, app.books[0].category_id) %}
+{{ category.name }}

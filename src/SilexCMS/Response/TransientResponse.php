@@ -23,13 +23,11 @@ class TransientResponse extends Response
             if ($content !== false) {
                 $template = $content;
             } else {
-                return $this->handleException($exception);
+                throw new \Exception($exception->getMessage());
             }
 
             $app['twig']->setLoader(new \Twig_Loader_String());
             $this->template = $app['twig']->loadTemplate($template);
-        } catch (\Exception $exception) {
-            $this->handleException($exception);
         }
 
         parent::__construct();
@@ -40,31 +38,18 @@ class TransientResponse extends Response
         return $this->template;
     }
 
-    public function getVariables()
-    {
-        return $this->variables;
-    }
-
     public function prepare(Request $request)
     {
         try {
             $this->setContent($this->template->render((array) $this->variables));
-        } catch (\Exception $e) {
-            $this->handleException($e);
+        } catch (\Twig_Error_Runtime $e) {
+            if (!$this->app['debug']) {
+                throw new \Exception($e->getMessage());
+            }
+
+            $this->setContent($e->getMessage());
         }
 
         return parent::prepare($request);
-    }
-
-    private function handleException($exception)
-    {
-        $message = $exception->getMessage();
-
-        if ($this->app['debug']) {
-            die($message);
-        }
-
-        error_log($message);
-        throw new \Exception($message);
     }
 }

@@ -1,6 +1,7 @@
 {
     "name" : "wisembly/silexcms",
     "description" : "Ultra lightweight CMS based on top of Silex",
+    "license": "MIT",
     "keywords": ["library", "silex", "CMS", "framework"],
 
     "autoload" : {
@@ -16,7 +17,7 @@
         "silex/silex"         : "~1.0.0",
         "symfony/form"        : "2.1.*",
         "symfony/twig-bridge" : "2.1.*",
-        "twig/extensions"     : "dev-master",
+        "twig/extensions"     : "1.0.*",
         "symfony/browser-kit" : "2.2.*",
         "symfony/translation" : "2.1.*",
         "symfony/config"      : "2.1.*",

@@ -44,10 +44,10 @@ abstract class AbstractRepository extends DataMap
             $condition = array('id' => $condition);
         }
 
-        $where = implode(' AND ', array_map(function ($name) { return $name . ' = ?'; }, array_keys($condition)));
+        $where = implode(' AND ', array_map(function ($name) { return mysql_real_escape_string($name) . ' = ?'; }, array_keys($condition)));
 
         if (!empty($where)) {
-            $where = ' WHERE ' . $where;
+            $where = ' WHERE ' . mysql_real_escape_string($where);
         }
 
         return $this->mapFromDb($this->db->executeQuery("SELECT * FROM {$this->table}{$where}", array_values($condition))->fetchAll(), $mapForeigns);

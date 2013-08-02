@@ -20,7 +20,7 @@ class ForeignKeyExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            "foreign"        => new \Twig_Function_Method($this, "foreign"),
+            "foreign" => new \Twig_Function_Method($this, "foreign"),
         );
     }
 

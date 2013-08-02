@@ -11,23 +11,14 @@ use Symfony\Component\HttpFoundation\Response;
 use SilexCMS\Repository\GenericRepository;
 use SilexCMS\Response\TransientResponse;
 
-class DynamicPage implements ServiceProviderInterface
+class DynamicPage extends Page implements ServiceProviderInterface
 {
-    private $name;
-    private $route;
-    private $template;
     private $table;
 
     public function __construct($name, $route, $template, $table)
     {
-        $this->name = $name;
-        $this->route = $route;
-        $this->template = $template;
         $this->table = $table;
-    }
-
-    public function boot(Application $app)
-    {
+        parent::__construct($name, $route, $template);
     }
 
     public function register(Application $app)
@@ -38,10 +29,16 @@ class DynamicPage implements ServiceProviderInterface
         $table = $this->table;
 
         $app->get($route, function (Application $app, Request $req, $_route_params) use ($name, $route, $template, $table) {
-            $repository = new GenericRepository($app['db'], $table);
-            $app['silexcms.dynamic.route'] = array('name' => $name, 'route' => $route, 'table' => $table, 'route_params' => $_route_params);
-            $app['set'] = $repository->findOneBy($_route_params);
-            $response = new TransientResponse($app, $template);
+            try {
+                $repository = new GenericRepository($app['db'], $table);
+                $app['silexcms.dynamic.route'] = array('name' => $name, 'route' => $route, 'table' => $table, 'route_params' => $_route_params);
+                $app['set'] = $repository->findOneBy($_route_params);
+
+                $response = new TransientResponse($app, $template);
+            } catch (\Exception $e) {
+                return $this->handleException($e->getMessage());
+            }
+
             return $response;
         })->bind($name);
     }

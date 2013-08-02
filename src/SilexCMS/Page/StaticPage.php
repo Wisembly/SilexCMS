@@ -10,23 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use SilexCMS\Response\TransientResponse;
 
-class StaticPage implements ServiceProviderInterface
+class StaticPage extends Page implements ServiceProviderInterface
 {
-    private $name;
-    private $route;
-    private $template;
-
-    public function __construct($name, $route, $template)
-    {
-        $this->name = $name;
-        $this->route = $route;
-        $this->template = $template;
-    }
-
-    public function boot(Application $app)
-    {
-    }
-
     public function register(Application $app)
     {
         $name = $this->name;
@@ -34,7 +19,14 @@ class StaticPage implements ServiceProviderInterface
         $template = $this->template;
 
         $app->get($route, function (Application $app, Request $req) use ($name, $route, $template) {
-            return new TransientResponse($app, $template);
+
+            try {
+                $response = new TransientResponse($app, $template);
+            } catch (\Exception $e) {
+                return $this->handleException($e->getMessage());
+            }
+
+            return $response;
         })->bind($name);
     }
 }

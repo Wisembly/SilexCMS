@@ -12,14 +12,14 @@ class Base extends WebTestCase
         return $text;
     }
 
-    public function createApplication()
+    public function createApplication($debug = true)
     {
         $app = new Application(array(
             'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
             'twig.path'             => __DIR__ . '/Resources/views',
             'locale_fallback'       => 'en',
             'translator.messages'   => array(),
-            'debug'                 => true
+            'debug'                 => $debug,
         ));
 
         // simulate sessions for tests
