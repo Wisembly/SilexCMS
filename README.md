@@ -49,14 +49,12 @@ $app->register(new SilexCMS\Page\DynamicPage('/product/{slug}', 'product.html.tw
 
 Datasets are an easy and handy way to retrieve database data directly in your Twig templates.
 First, register your available DataSets for your application:
-
-```
+```php
 $app->register(new DataSet('twig_name', 'table_name'));
 $app->register(new DataSet('users', 'User'));
 ```
 
 Then, use them in your Twig templates:
-
 ```
 {# Tell in your template that you will need users DataSet loaded in app #}
 {% bloc users %}{% endbloc %}
@@ -76,7 +74,7 @@ SilexCMS provides a Twig Extension to retrieve easily a particular object by id
 reference inside a DataSet
 
 First, load Foreign Key Extension
-```
+```php
 $app['twig']->addExtension(new \SilexCMS\Twig\Extension\ForeignKeyExtension($app));
 ```
 
@@ -134,7 +132,7 @@ $app->post('/post', function (Application $app, Request $req) {
 ```
 
 ##### login.html.twig
-```
+```html
 <form action="/login" method="post">
     <input type="text" name="_password" /><br />
     <input type="password" name="_password" /><br />
