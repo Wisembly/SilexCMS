@@ -3,6 +3,7 @@
 namespace SilexCMS\Repository;
 
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Schema\Column;
 
 class DataMap
 {
@@ -81,7 +82,7 @@ class DataMap
         return $mappedData;
     }
 
-    public function mapForeignKeys($table, $column, $id = null)
+    public function mapForeignKeys($table, Column $column, $id = null)
     {
         try {
             $relatedRows = $this->db->executeQuery("SELECT * FROM $table ORDER BY id ASC")->fetchAll();

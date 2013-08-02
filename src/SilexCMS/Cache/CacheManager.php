@@ -100,7 +100,7 @@ class CacheManager implements ServiceProviderInterface
         return $version;
     }
 
-    private function isFresh($request)
+    private function isFresh(Request $request)
     {
         $url = $request->server->get('REQUEST_URI');
 
@@ -113,7 +113,7 @@ class CacheManager implements ServiceProviderInterface
         return false;
     }
 
-    private function getCachedVersion($request)
+    private function getCachedVersion(Request $request)
     {
         return $this->manager->fetch($request->server->get('REQUEST_URI'));
     }

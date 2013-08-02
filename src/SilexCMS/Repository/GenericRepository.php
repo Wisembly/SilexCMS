@@ -3,13 +3,14 @@
 namespace SilexCMS\Repository;
 
 use SilexCMS\Repository\AbstractRepository;
+use Doctrine\DBAL\Connection as Database;
 
 class GenericRepository extends AbstractRepository
 {
     protected $table = null;
     protected $schema = null;
 
-    public function __construct($db, $table)
+    public function __construct(Database $db, $table)
     {
         $this->table = mysql_real_escape_string($table);
         $this->schema = $db->getSchemaManager()->listTableColumns($table);
