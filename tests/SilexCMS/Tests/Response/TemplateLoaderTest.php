@@ -15,8 +15,6 @@ class TemplateLoaderTest extends Base
     {
         $app = $this->createApplication();
 
-        $app::loadCore($app);
-
         $this->assertEquals('foo.html.twig', $app['silexcms.template.loader']->load('foo.html.twig'));
         $this->assertTrue(false !== strpos($app['silexcms.template.loader']->load('hello'), 'SilexCMS/Response/../Resources/views/hello'));
     }

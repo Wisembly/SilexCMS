@@ -14,18 +14,13 @@ class CacheManager implements ServiceProviderInterface
     private $manager;
 
     private $type = 'array';
-    private $active = false;
+    private $active = true;
     private $version;
     private $toBeCached = array();
 
-    public function __construct($name, array $options = null)
+    public function __construct($name, array $options = array())
     {
         $this->name = $name;
-
-        if (empty($options)) {
-            $this->active = false;
-            return;
-        }
 
         foreach ($options as $option => $value) {
             $this->$option = $value;
@@ -44,6 +39,16 @@ class CacheManager implements ServiceProviderInterface
     {
         $this->app = $app;
         $app[$this->name] = $this;
+    }
+
+    public function activate()
+    {
+        $this->active = true;
+    }
+
+    public function deActivate()
+    {
+        $this->active = false;
     }
 
     public function check(Request $request)

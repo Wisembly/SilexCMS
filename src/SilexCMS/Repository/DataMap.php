@@ -40,7 +40,7 @@ class DataMap
                         $value = $value == 1 ;
                     break;
                     case 'Integer' :
-                        $value = (int)$value;
+                        $value = (int) $value;
                     break;
                     case 'Array' :
                     case 'Object':
@@ -66,7 +66,7 @@ class DataMap
                         $value = $value ? 1 : 0 ;
                     break;
                     case 'Integer' :
-                        $value = (int)$value;
+                        $value = (int) $value;
                     break;
                     case 'Array' :
                     case 'Object':

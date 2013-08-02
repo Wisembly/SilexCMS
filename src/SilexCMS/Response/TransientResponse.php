@@ -38,6 +38,11 @@ class TransientResponse extends Response
         return $this->template;
     }
 
+    public function getVariables()
+    {
+        return $this->variables;
+    }
+
     public function prepare(Request $request)
     {
         try {

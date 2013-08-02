@@ -11,16 +11,20 @@ use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use SilexCMS\Security\Firewall;
+use SilexCMS\Security\SecurityController;
+use SilexCMS\Administration\AdministrationController;
 use SilexCMS\Response\TemplateLoader;
 use SilexCMS\Cache\CacheManager;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class Application extends BaseApplication
 {
-    public function __construct($values)
+    public function __construct(array $values)
     {
         parent::__construct();
 
-        $this->before(function ($request) {
+        $this->before(function (Request $request) {
             if (!$request->hasSession()) {
                 $request->getSession()->start();
             }
@@ -33,22 +37,35 @@ class Application extends BaseApplication
         $this->register(new TranslationServiceProvider(),  $values);
         $this->register(new FormServiceProvider(),         $values);
         $this->register(new ValidatorServiceProvider(),    $values);
+
+        $this->register(new TemplateLoader('silexcms.template.loader'));
     }
 
-    public static function loadCore($app, array $options = array())
+    public function loadCore(array $options = array())
     {
+        // security
         if (isset($options['security'])) {
-            $app->register(new Firewall('silexcms.security', $options['security']));
-            require_once __DIR__ . '/Security/security.php';
-            require_once __DIR__ . '/Admin/administration.php';
+            $this->register(new Firewall('silexcms.security', $options['security']));
+            $this->register(new SecurityController());
+            $this->register(new AdministrationController());
         }
 
-        $app->register(new TemplateLoader('silexcms.template.loader'));
-        $app->register(new CacheManager('silexcms.cache.manager', array(
-            'active'    => !$app['debug'],
-            'type'      => isset($app['cache.type']) ? $app['cache.type'] : 'array',
-        )));
+        // caching strategy
+        if (isset($options['cache'])) {
+            $this->register(new CacheManager('silexcms.cache.manager', array(
+                'active'    => !$this['debug'],
+                'type'      => isset($options['cache']['type']) ? $options['cache']['type'] : 'array',
+            )));
 
-        return $app;
+            $this->before(function(Request $request) {
+                return $this['silexcms.cache.manager']->check($request);
+            });
+
+            $this->after(function(Request $request, $response) {
+                $this['silexcms.cache.manager']->persist($request, $response);
+            });
+        }
+
+        return $this;
     }
 }
