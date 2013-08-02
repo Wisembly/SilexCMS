@@ -24,7 +24,7 @@ $app->match('/login', function (Application $app, Request $req) {
 })
 ->bind('administration_login');
 
-$app->get('/logout', function (Application $app, Request $req) {
+$app->get('/logout', function (Application $app) {
     $app['silexcms.security']->unbind();
     return $app->redirect($app['url_generator']->generate('index'));
 })

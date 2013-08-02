@@ -6,12 +6,6 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use SilexCMS\Response\TransientResponse;
-
-use Doctrine\Common\Cache\ApcCache;
-use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Common\Cache\MemcacheCache;
-use Doctrine\Common\Cache\MemcachedCache;
 
 class CacheManager implements ServiceProviderInterface
 {

@@ -5,9 +5,6 @@ namespace SilexCMS\Page;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 use SilexCMS\Response\TransientResponse;
 
 class StaticPage extends Page implements ServiceProviderInterface
@@ -18,7 +15,7 @@ class StaticPage extends Page implements ServiceProviderInterface
         $route = $this->route;
         $template = $this->template;
 
-        $app->get($route, function (Application $app, Request $req) use ($name, $route, $template) {
+        $app->get($route, function (Application $app) use ($name, $route, $template) {
 
             try {
                 $response = new TransientResponse($app, $template);

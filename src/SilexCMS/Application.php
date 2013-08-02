@@ -13,7 +13,6 @@ use Silex\Provider\ValidatorServiceProvider;
 use SilexCMS\Security\Firewall;
 use SilexCMS\Response\TemplateLoader;
 use SilexCMS\Cache\CacheManager;
-use SilexCMS\Twig\Extension\ForeignKeyExtension;
 
 class Application extends BaseApplication
 {

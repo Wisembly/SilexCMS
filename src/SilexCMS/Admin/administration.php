@@ -9,7 +9,7 @@ use SilexCMS\Response\TransientResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SilexCMS\Repository\GenericRepository;
 
-$app->match('/administration/{table}', function (Application $app, Request $req, $table) {
+$app->match('/administration/{table}', function (Application $app, $table) {
 
     if (is_null($app['silexcms.security']->getUsername())) {
         return $app->redirect($app['url_generator']->generate('index'));
@@ -75,7 +75,7 @@ $app->match('/administration/{table}/{id}', function (Application $app, Request 
 })
 ->bind('administration_edit');
 
-$app->match('/administration', function(Application $app, Request $req) {
+$app->match('/administration', function(Application $app) {
 
     if (is_null($app['silexcms.security']->getUsername())) {
         return $app->redirect($app['url_generator']->generate('index'));

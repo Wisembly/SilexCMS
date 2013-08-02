@@ -32,7 +32,7 @@ class DataSet implements ServiceProviderInterface
         $self = $this;
 
         // since 5 nov 2012 (see changelog..) after and before event changed priorities..
-        // Thanks Mael & Fabpot for this 1 find and debug day headache. Set up prioirity to 8, and it just works fine..
+        // Set up prioirity to 8, and it just works fine..
         $app->after(function (Request $req, Response $resp) use ($self, $app) {
             $self->filter($app, $resp);
         }, 8);

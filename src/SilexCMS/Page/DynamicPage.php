@@ -5,9 +5,6 @@ namespace SilexCMS\Page;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 use SilexCMS\Repository\GenericRepository;
 use SilexCMS\Response\TransientResponse;
 
@@ -28,7 +25,7 @@ class DynamicPage extends Page implements ServiceProviderInterface
         $template = $this->template;
         $table = $this->table;
 
-        $app->get($route, function (Application $app, Request $req, $_route_params) use ($name, $route, $template, $table) {
+        $app->get($route, function (Application $app, $_route_params) use ($name, $route, $template, $table) {
             try {
                 $repository = new GenericRepository($app['db'], $table);
                 $app['silexcms.dynamic.route'] = array('name' => $name, 'route' => $route, 'table' => $table, 'route_params' => $_route_params);
