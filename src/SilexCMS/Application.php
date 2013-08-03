@@ -47,7 +47,7 @@ class Application extends BaseApplication
         if (isset($options['security'])) {
             $this->register(new Firewall('silexcms.security', $options['security']));
             $this->register(new SecurityController());
-            $this->register(new AdministrationController());
+            $this->register(new AdministrationController($this['db']));
         }
 
         // caching strategy

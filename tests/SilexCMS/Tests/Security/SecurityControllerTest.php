@@ -6,7 +6,7 @@ use SilexCMS\Tests\Base;
 use SilexCMS\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class securityTest extends Base
+class SecurityControllerTest extends Base
 {
     public function testLogin()
     {
