@@ -53,8 +53,13 @@ class Application extends BaseApplication
             )));
 
             $this->before(function(Request $request) {
+                // only cache GET requests
+                if ('GET' !== $request->getMethod()) {
+                    return;
+                }
+
                 return $this['silexcms.cache.manager']->check($request);
-            });
+            }, BaseApplication::EARLY_EVENT);
 
             $this->after(function(Request $request, $response) {
                 $this['silexcms.cache.manager']->persist($request, $response);

@@ -40,7 +40,7 @@ class AdministrationControllerTest extends Base
     // public function testAdministrationRow()
     // {
     //     $client = $this->app->handle(Request::create('/administration/book/1'));
-    //     $this->assertEquals('200', $client->getStatusCode());
+    //     $this->assertEquals(200, $client->getStatusCode());
     //     $this->assertContains('Lord Of The Rings', $client->getContent());
     // }
 }

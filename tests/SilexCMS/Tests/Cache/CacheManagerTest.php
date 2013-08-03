@@ -44,14 +44,23 @@ class CacheManagerTest extends Base
 
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals('bar', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
 
         $app['db']->update('messages', array('value' => 'baz'), array('id' => 0));
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals('bar', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
 
         $app['silexcms.cache.manager']->update();
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals('baz', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
+
+        // POST query not cached
+        $app['db']->update('messages', array('value' => 'bar'), array('id' => 0));
+        $response = $app->handle(Request::create('/foo', 'POST'));
+        $this->assertEquals('bar', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function testCacheDeActivation()

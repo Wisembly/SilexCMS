@@ -58,7 +58,7 @@ class CacheManager implements ServiceProviderInterface
         }
 
         if ($this->isFresh($request)) {
-            return new Response($this->getCachedVersion($request), 403);
+            return new Response($this->getCachedVersion($request));
         }
 
         return;

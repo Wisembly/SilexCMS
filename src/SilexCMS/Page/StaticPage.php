@@ -15,7 +15,7 @@ class StaticPage extends Page implements ServiceProviderInterface
         $route = $this->route;
         $template = $this->template;
 
-        $app->get($route, function (Application $app) use ($name, $route, $template) {
+        $app->match($route, function (Application $app) use ($name, $route, $template) {
 
             try {
                 $response = new TransientResponse($app, $template);
