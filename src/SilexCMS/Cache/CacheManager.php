@@ -58,7 +58,10 @@ class CacheManager implements ServiceProviderInterface
         }
 
         if ($this->isFresh($request)) {
-            return new Response($this->getCachedVersion($request));
+            $response = new Response($this->getCachedVersion($request));
+            $response->headers->set('SilexCMS-Cached-At', $this->getVersionDate());
+
+            return $response;
         }
 
         return;
@@ -86,16 +89,32 @@ class CacheManager implements ServiceProviderInterface
 
         $this->version++;
         $this->manager->save('version', $this->version);
+        $this->saveVersionDate();
+    }
+
+    private function saveVersionDate()
+    {
+        $this->manager->save('version_date', new \DateTime());
+    }
+
+    private function getVersionDate()
+    {
+        if (false === $this->manager->contains('version_date')) {
+            return null;
+        }
+
+        return $this->manager->fetch('version_date')->format('c');
     }
 
     private function getVersion()
     {
         if (false !== $this->manager->contains('version')) {
-            $version = $this->manager->fetch('version');
-        } else {
-            $version = 0;
-            $this->manager->save('version', $version);
+            return $this->manager->fetch('version');
         }
+
+        $version = 0;
+        $this->manager->save('version', $version);
+        $this->saveVersionDate();
 
         return $version;
     }

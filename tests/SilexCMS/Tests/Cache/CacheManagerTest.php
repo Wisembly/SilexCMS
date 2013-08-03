@@ -44,11 +44,14 @@ class CacheManagerTest extends Base
 
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals('bar', $response->getContent());
+        $headers = $response->headers->all();
+        $this->assertFalse(isset($headers['silexcms-cached-at']));
         $this->assertEquals(200, $response->getStatusCode());
 
         $app['db']->update('messages', array('value' => 'baz'), array('id' => 0));
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals('bar', $response->getContent());
+        $this->assertArrayHasKey('silexcms-cached-at', $response->headers->all());
         $this->assertEquals(200, $response->getStatusCode());
 
         $app['silexcms.cache.manager']->update();
