@@ -9,6 +9,7 @@ use SilexCMS\Form\TableType;
 use SilexCMS\Response\TransientResponse;
 
 use Symfony\Component\HttpFoundation\Request;
+use SilexCMS\Repository\Schema;
 use SilexCMS\Repository\GenericRepository;
 use Doctrine\DBAL\Connection as Database;
 
@@ -79,8 +80,10 @@ class AdministrationController implements ServiceProviderInterface
                             $repository->update($row, $where);
                         }
 
-                        // cache strategy. Update cache version
-                        $app['silexcms.cache.manager']->update();
+                        try {
+                            // cache strategy if exist. Update cache version
+                            $app['silexcms.cache.manager']->update();
+                        } catch (\Exception $e) {}
                     }
                 }
             }
@@ -98,18 +101,10 @@ class AdministrationController implements ServiceProviderInterface
                 return $app->redirect($app['url_generator']->generate('index'));
             }
 
-            $listTables = array();
-            try {
-                $tables = $this->db->fetchAll('SHOW tables');
-            } catch (\Exception $e) {
-                $tables = array();
-            }
+            $schema = new Schema($app['db']);
+            $tables = $schema->getTables();
 
-            foreach ($tables as $table) {
-                $listTables[] = array_shift($table);
-            }
-
-            return new TransientResponse($app, $app['silexcms.template.loader']->load('administration/administration_hub.html.twig'), array('tables' => $listTables));
+            return new TransientResponse($app, $app['silexcms.template.loader']->load('administration/administration_hub.html.twig'), array('tables' => $tables));
         })
         ->bind('administration_hub');
     }

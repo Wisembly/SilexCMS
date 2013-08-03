@@ -2,7 +2,7 @@
 
 namespace SilexCMS\Form;
 
-use Pimple;
+use SilexCMS\Application;
 
 use SilexCMS\Form\RowType;
 
@@ -11,15 +11,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TableType extends AbstractType
 {
-    public function __construct(Pimple $container, $table)
+    public function __construct(Application $app, $table)
     {
-        $this->container = $container;
+        $this->app = $app;
         $this->table = $table;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('row', 'collection', array('type' => new RowType($this->container, $this->table)));
+        $builder->add('row', 'collection', array('type' => new RowType($this->app, $this->table)));
     }
 
     public function getName()
