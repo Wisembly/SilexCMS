@@ -45,15 +45,7 @@ class TransientResponse extends Response
 
     public function prepare(Request $request)
     {
-        try {
-            $this->setContent($this->template->render((array) $this->variables));
-        } catch (\Twig_Error_Runtime $e) {
-            if (!$this->app['debug']) {
-                throw new \Exception($e->getMessage());
-            }
-
-            $this->setContent($e->getMessage());
-        }
+        $this->setContent($this->template->render((array) $this->variables));
 
         return parent::prepare($request);
     }

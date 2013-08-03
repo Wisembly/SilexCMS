@@ -30,9 +30,9 @@ class CacheManagerTest extends Base
 
     public function testWithCache()
     {
-        $app = $this->createApplication(false);
-        $app->loadCore(array(
-            'cache' => array(
+        $app = $this->createApplication(array(
+            'debug' => false,
+            'silexcms.cache' => array(
                 'type'  => 'array',
             ),
         ));
@@ -56,9 +56,9 @@ class CacheManagerTest extends Base
 
     public function testCacheDeActivation()
     {
-        $app = $this->createApplication(false);
-        $app->loadCore(array(
-            'cache' => array(
+        $app = $this->createApplication(array(
+            'debug' => false,
+            'silexcms.cache' => array(
                 'type'  => 'array',
             ),
         ));

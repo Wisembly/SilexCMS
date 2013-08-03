@@ -1,0 +1,4 @@
+{% block letters %}{% endblock %}
+{% block categories %}{% endblock %}
+{% if not foreign(app.categories, 42) %}no matching category{% else %}success{% endif %}
+{% if not foreign(app.letters, 42) %} and no matching letter{% else %}success{% endif %}

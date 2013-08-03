@@ -12,15 +12,15 @@ class Base extends WebTestCase
         return $text;
     }
 
-    public function createApplication($debug = true)
+    public function createApplication(array $options = array())
     {
-        $app = new Application(array(
+        $app = new Application(array_merge(array(
             'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
             'twig.path'             => __DIR__ . '/Resources/views',
             'locale_fallback'       => 'en',
             'translator.messages'   => array(),
-            'debug'                 => $debug,
-        ));
+            'debug'                 => isset($options['debug']) ? $options['debug'] : true,
+        ), $options));
 
         // simulate sessions for tests
         $app['session.test'] = true;

@@ -10,7 +10,7 @@ use SilexCMS\Tests\Base;
 
 class StaticPageTest extends Base
 {
-    public function testSolo()
+    public function testForeignSuccess()
     {
         $app = $this->createApplication();
         $app['twig']->addExtension(new \SilexCMS\Twig\Extension\ForeignKeyExtension($app));
@@ -20,5 +20,17 @@ class StaticPageTest extends Base
         $app->register(new StaticPage('staticpage', '/foo', 'foreign.html.twig'));
 
         $this->assertEquals('fantasy', $app->handle(Request::create('/foo'))->getContent());
+    }
+
+    public function testForeignFailure()
+    {
+        $app = $this->createApplication();
+        $app['twig']->addExtension(new \SilexCMS\Twig\Extension\ForeignKeyExtension($app));
+
+        $app->register(new DataSet('categories', 'category'));
+        $app->register(new DataSet('letters', 'letters'));
+        $app->register(new StaticPage('staticpage', '/foo', 'foreign_fail.html.twig'));
+
+        $this->assertEquals('no matching category and no matching letter', $app->handle(Request::create('/foo'))->getContent());
     }
 }

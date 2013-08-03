@@ -38,7 +38,7 @@ class StaticPageTest extends Base
 
     public function testWrongTemplateInProdutionMode()
     {
-        $app = $this->createApplication(false);
+        $app = $this->createApplication(array('debug' => false));
         $app->register(new StaticPage('staticpage', '/foo', 'syntax_error_template.html.twig'));
 
         $this->assertEquals(500, $app->handle(Request::create('/foo'))->getStatusCode());

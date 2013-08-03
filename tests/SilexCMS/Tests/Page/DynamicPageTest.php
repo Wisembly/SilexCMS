@@ -31,7 +31,7 @@ class DynamicPageTest extends Base
 
     public function testWrongRepoInProductionMode()
     {
-        $app = $this->createApplication(false);
+        $app = $this->createApplication(array('debug' => false));
         $app->register(new DynamicPage('dynamic_page', '/foo/{val}', 'syntax_error_template.html.twig', 'notfound'));
 
         $this->assertEquals(500, $app->handle(Request::create('/foo/1'))->getStatusCode());
@@ -47,7 +47,7 @@ class DynamicPageTest extends Base
 
     public function testWrongRepoKeyInProductionMode()
     {
-        $app = $this->createApplication(false);
+        $app = $this->createApplication(array('debug' => false));
         $app->register(new DynamicPage('dynamic_page', '/foo/{notfound}', 'syntax_error_template.html.twig', 'digits'));
 
         $this->assertEquals(500, $app->handle(Request::create('/foo/1'))->getStatusCode());
@@ -63,7 +63,7 @@ class DynamicPageTest extends Base
 
     public function testWrongTemplateInProdutionMode()
     {
-        $app = $this->createApplication(false);
+        $app = $this->createApplication(array('debug' => false));
         $app->register(new DynamicPage('dynamic_page', '/foo/{val}', 'syntax_error_template.html.twig', 'digits'));
 
         $this->assertEquals(500, $app->handle(Request::create('/foo/2'))->getStatusCode());

@@ -71,12 +71,12 @@ class TransientResponseTest extends Base
             return new TransientResponse($app, 'missing_var_template.html.twig');
         });
 
-        $this->assertEquals('Variable "bar" does not exist in "missing_var_template.html.twig" at line 1', $app->handle(Request::create('/stream'))->getContent());
+        $this->assertContains('Variable "bar" does not exist in "missing_var_template.html.twig" at line 1', $app->handle(Request::create('/stream'))->getContent());
     }
 
     public function testLoadWithTemplateVariableErrorInProductionMode()
     {
-        $app = $this->createApplication(false);
+        $app = $this->createApplication(array('debug' => false));
 
         $app->get('/stream', function (Application $app) {
             return new TransientResponse($app, 'missing_var_template.html.twig');
