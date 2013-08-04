@@ -18,6 +18,9 @@ class CacheManager implements ServiceProviderInterface
     private $version;
     private $toBeCached = array();
 
+    const VERSION_KEY = 'silexcms.cache.version';
+    const VERSION_DATE_KEY = 'silexcms.cache.version.date';
+
     public function __construct($name, array $options = array())
     {
         $this->name = $name;
@@ -32,7 +35,7 @@ class CacheManager implements ServiceProviderInterface
         $type = 'Doctrine\Common\Cache\\' . ucfirst($this->type) . 'Cache';
         $this->manager = new $type;
         $this->manager->setNamespace('silexcms.cache');
-        $this->version = $this->getVersion();
+        $this->version = $this->getCacheVersion();
     }
 
     public function register(Application $app)
@@ -59,7 +62,8 @@ class CacheManager implements ServiceProviderInterface
 
         if ($this->isFresh($request)) {
             $response = new Response($this->getCachedVersion($request));
-            $response->headers->set('SilexCMS-Cached-At', $this->getVersionDate());
+            $response->headers->set('SilexCMS-Cached-At', $this->getCacheVersionDate());
+            $response->headers->set('SilexCMS-Cache-Version', $this->getCacheVersion());
 
             return $response;
         }
@@ -84,39 +88,40 @@ class CacheManager implements ServiceProviderInterface
     public function update()
     {
         if (empty($this->version)) {
-            $this->version = $this->getVersion();
+            $this->version = $this->getCacheVersion();
         }
 
-        $this->version++;
-        $this->manager->save('version', $this->version);
+        $this->manager->save(self::VERSION_KEY, ++$this->version);
         $this->saveVersionDate();
+    }
+
+    public function getCacheVersionDate()
+    {
+        if (false === $this->manager->contains(self::VERSION_DATE_KEY)) {
+            $date = new \DateTime();
+
+            return $date->format('c');
+        }
+
+        return $this->manager->fetch(self::VERSION_DATE_KEY)->format('c');
+    }
+
+    public function getCacheVersion()
+    {
+        if (false === $this->manager->contains(self::VERSION_KEY)) {
+            $this->version = 1;
+            $this->manager->save(self::VERSION_KEY, $this->version);
+            $this->saveVersionDate();
+
+            return $this->version;
+        }
+
+        return $this->manager->fetch(self::VERSION_KEY);
     }
 
     private function saveVersionDate()
     {
-        $this->manager->save('version_date', new \DateTime());
-    }
-
-    private function getVersionDate()
-    {
-        if (false === $this->manager->contains('version_date')) {
-            return null;
-        }
-
-        return $this->manager->fetch('version_date')->format('c');
-    }
-
-    private function getVersion()
-    {
-        if (false !== $this->manager->contains('version')) {
-            return $this->manager->fetch('version');
-        }
-
-        $version = 0;
-        $this->manager->save('version', $version);
-        $this->saveVersionDate();
-
-        return $version;
+        $this->manager->save(self::VERSION_DATE_KEY, new \DateTime());
     }
 
     private function isFresh(Request $request)
