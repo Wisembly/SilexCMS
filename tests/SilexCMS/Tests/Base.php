@@ -22,13 +22,20 @@ class Base extends WebTestCase
             'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
             'twig.path'             => __DIR__ . '/Resources/views',
             'locale_fallback'       => 'en',
-            'translator.messages'   => array(),
             'debug'                 => isset($options['debug']) ? $options['debug'] : true,
         ), $options));
 
         // simulate sessions for tests
         $app['session.test'] = true;
         $this->populateDatabase($app['db']);
+
+        // fake translations
+        $app['translator.domains'] = array(
+            'messages' => array(
+                'fr' => array('hello' => 'Bonjour'),
+                'en' => array('hello' => 'Hello'),
+            ),
+        );
 
         return $app;
     }
