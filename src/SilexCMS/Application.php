@@ -69,7 +69,7 @@ class Application extends BaseApplication
         // caching strategy
         if (isset($options['silexcms.cache'])) {
             $this->register(new CacheManager('silexcms.cache.manager', array(
-                'active'    => !$this['debug'],
+                'active'    => isset($options['silexcms.cache']['enable']) ? $options['silexcms.cache']['enable'] : false,
                 'type'      => isset($options['silexcms.cache']['type']) ? $options['silexcms.cache']['type'] : 'array',
             )));
 
