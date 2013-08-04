@@ -22,13 +22,26 @@ use Symfony\Component\Debug\ExceptionHandler;
 
 use SilexCMS\Command\ClearCacheCommand;
 
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
 
 class Application extends BaseApplication
 {
-    public function __construct(array $options = array())
+    /**
+    *   mixed $options either an array or yaml valid ressource
+    */
+    public function __construct($options)
     {
         parent::__construct();
+
+        // if options is a yaml file, read it
+        if (!is_array($options) && false !== strpos($options, '.yml')) {
+            $options = Yaml::parse($options);
+
+            if (!is_array($options)) {
+                throw new \Exception('Wrong yaml file');
+            }
+        }
 
         $this->register(new SessionServiceProvider(),      $options);
         $this->register(new TwigServiceProvider(),         $options);

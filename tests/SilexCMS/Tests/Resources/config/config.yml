@@ -1,0 +1,11 @@
+debug: true
+db.options:
+  driver: pdo_sqlite
+  memory: true
+locale_fallback: en
+silexcms.cache:
+  active: true
+  type: array
+silexcms.security:
+  user: pass
+  foo: bar

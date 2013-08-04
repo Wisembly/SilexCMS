@@ -47,4 +47,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue(isset($this->app['session']));
     }
+
+    public function testWithGoodYaml()
+    {
+        $app = new Application(__DIR__.'/Resources/config/config.yml');
+        $this->assertInstanceOf('\\Silex\\Application', $app);
+        $this->assertTrue(isset($app['silexcms.cache.manager']));
+        $this->assertTrue(isset($app['silexcms.security']));
+    }
+
+    /**
+    * @expectedException Exception
+    */
+    public function testWithWrongYaml()
+    {
+        $app = new Application(__DIR__.'/Resources/config/wrong_config.yml');
+    }
 }
