@@ -15,10 +15,12 @@ use SilexCMS\Security\SecurityController;
 use SilexCMS\Administration\AdministrationController;
 use SilexCMS\Response\TemplateLoader;
 use SilexCMS\Cache\CacheManager;
+use Knp\Provider\ConsoleServiceProvider;
 
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 
+use SilexCMS\Command\ClearCacheCommand;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,6 +39,12 @@ class Application extends BaseApplication
         $this->register(new ValidatorServiceProvider(),    $options);
 
         $this->register(new TemplateLoader('silexcms.template.loader'));
+
+        $this->register(new ConsoleServiceProvider(), array(
+            'console.name'              => 'SilexCMS',
+            'console.version'           => '1.0.0',
+            'console.project_directory' => __DIR__ . '/..',
+        ));
 
         // security
         if (isset($options['silexcms.security'])) {
@@ -69,5 +77,8 @@ class Application extends BaseApplication
         // handle errors and exceptions in debug mode
         ErrorHandler::register($this['debug']);
         ExceptionHandler::register($this['debug']);
+
+        // registering console commands
+        $this['console']->add(new ClearCacheCommand());
     }
 }

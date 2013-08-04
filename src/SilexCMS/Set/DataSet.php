@@ -23,9 +23,7 @@ class DataSet implements ServiceProviderInterface
         $this->conditions = $conditions;
     }
 
-    public function boot(Application $app)
-    {
-    }
+    public function boot(Application $app) {}
 
     public function register(Application $app)
     {

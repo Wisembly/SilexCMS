@@ -26,7 +26,7 @@ class DynamicPageTest extends Base
         $app = $this->createApplication();
         $app->register(new DynamicPage('dynamic_page', '/foo/{val}', 'syntax_error_template.html.twig', 'notfound'));
 
-        $this->assertEquals('SQLSTATE[HY000]: General error: 1 no such table: notfound', $app->handle(Request::create('/foo/1'))->getContent());
+        $this->assertContains('SQLSTATE[HY000]: General error: 1 no such table: notfound', $app->handle(Request::create('/foo/1'))->getContent());
     }
 
     public function testWrongRepoInProductionMode()
@@ -42,7 +42,7 @@ class DynamicPageTest extends Base
         $app = $this->createApplication();
         $app->register(new DynamicPage('dynamic_page', '/foo/{notfound}', 'syntax_error_template.html.twig', 'digits'));
 
-        $this->assertEquals('SQLSTATE[HY000]: General error: 1 no such column: notfound', $app->handle(Request::create('/foo/1'))->getContent());
+        $this->assertContains('SQLSTATE[HY000]: General error: 1 no such column: notfound', $app->handle(Request::create('/foo/1'))->getContent());
     }
 
     public function testWrongRepoKeyInProductionMode()
@@ -58,7 +58,7 @@ class DynamicPageTest extends Base
         $app = $this->createApplication();
         $app->register(new DynamicPage('dynamic_page', '/foo/{val}', 'syntax_error_template.html.twig', 'digits'));
 
-        $this->assertEquals('Calling "parent" outside a block is forbidden in "syntax_error_template.html.twig" at line 1', $app->handle(Request::create('/foo/1'))->getContent());
+        $this->assertContains('Calling "parent" outside a block is forbidden in "syntax_error_template.html.twig" at line 1', $app->handle(Request::create('/foo/1'))->getContent());
     }
 
     public function testWrongTemplateInProdutionMode()

@@ -23,7 +23,8 @@
         "symfony/config"      : "2.1.*",
         "symfony/yaml"        : "2.1.*",
         "symfony/validator"   : "2.1.*",
-        "twig/twig"           : ">=1.8,<2.0-dev"
+        "twig/twig"           : ">=1.8,<2.0-dev",
+        "knplabs/console-service-provider": "dev-master"
     },
 
     "require-dev": {

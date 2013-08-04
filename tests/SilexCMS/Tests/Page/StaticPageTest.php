@@ -33,7 +33,7 @@ class StaticPageTest extends Base
         $app = $this->createApplication();
         $app->register(new StaticPage('staticpage', '/foo', 'syntax_error_template.html.twig'));
 
-        $this->assertEquals('Calling "parent" outside a block is forbidden in "syntax_error_template.html.twig" at line 1', $app->handle(Request::create('/foo'))->getContent());
+        $this->assertContains('Calling "parent" outside a block is forbidden in "syntax_error_template.html.twig" at line 1', $app->handle(Request::create('/foo'))->getContent());
     }
 
     public function testWrongTemplateInProdutionMode()
