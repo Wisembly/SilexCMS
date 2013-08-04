@@ -33,7 +33,8 @@ class CacheManagerTest extends Base
         $app = $this->createApplication(array(
             'debug' => false,
             'silexcms.cache' => array(
-                'type'  => 'array',
+                'enable' => true,
+                'type'   => 'array',
             ),
         ));
 
@@ -71,7 +72,8 @@ class CacheManagerTest extends Base
         $app = $this->createApplication(array(
             'debug' => false,
             'silexcms.cache' => array(
-                'type'  => 'array',
+                'enable' => true,
+                'type'   => 'array',
             ),
         ));
 
