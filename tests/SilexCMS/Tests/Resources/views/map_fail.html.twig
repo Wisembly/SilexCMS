@@ -1,0 +1,3 @@
+{% block map %}{% endblock %}
+{% set mapped = map(app.map, "plop") %}
+{{ mapped['foo'].value }} - {{ mapped['bar'].value }}

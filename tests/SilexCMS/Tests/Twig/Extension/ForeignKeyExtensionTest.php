@@ -8,7 +8,7 @@ use SilexCMS\Page\StaticPage;
 use SilexCMS\Set\DataSet;
 use SilexCMS\Tests\Base;
 
-class StaticPageTest extends Base
+class ForeignKeyExtension extends Base
 {
     public function testForeignSuccess()
     {

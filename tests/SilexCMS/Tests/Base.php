@@ -59,6 +59,10 @@ class Base extends WebTestCase
         $db->executeQuery('CREATE TABLE book (id int, name char, category_id int)');
         $db->insert('book', array('id' => 1, 'name' => 'Lord Of The Rings', 'category_id' => 2));
         $db->insert('book', array('id' => 2, 'name' => 'Dune', 'category_id' => 1));
+
+        $db->executeQuery('CREATE TABLE map (key char, value char)');
+        $db->insert('map', array('key' => 'foo', 'value' => 'bar'));
+        $db->insert('map', array('key' => 'bar', 'value' => 'baz'));
     }
 
     /**
