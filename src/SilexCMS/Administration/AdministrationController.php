@@ -9,7 +9,6 @@ use SilexCMS\Form\TableType;
 use SilexCMS\Response\TransientResponse;
 
 use Symfony\Component\HttpFoundation\Request;
-use SilexCMS\Repository\Schema;
 use Doctrine\DBAL\Connection as Database;
 
 use Silex\ServiceProviderInterface;
@@ -30,7 +29,7 @@ class AdministrationController implements ServiceProviderInterface
         $app->match('/administration/{table}', function ($table) use ($app) {
 
             if (is_null($app['silexcms.security']->getUsername())) {
-                return $app->redirect($app['url_generator']->generate('index'));
+                return $app->redirect($app['url_generator']->generate('administration_login'));
             }
 
             $repository = $app['silexcms.sets'][$table]->getRepository();
@@ -54,7 +53,7 @@ class AdministrationController implements ServiceProviderInterface
         $app->match('/administration/{table}/{primaryKey}', function (Request $req, $table, $primaryKey) use ($app) {
 
             if (is_null($app['silexcms.security']->getUsername())) {
-                return $app->redirect($app['url_generator']->generate('index'));
+                return $app->redirect($app['url_generator']->generate('administration_login'));
             }
 
             $set = $app['silexcms.sets'][$table];
@@ -70,9 +69,9 @@ class AdministrationController implements ServiceProviderInterface
 
                     foreach ($data['row'] as $row) {
                         $where = array($repository->getPrimaryKey() => $row[$repository->getPrimaryKey()]);
-                        unset($row['id']);
+                        unset($row[$repository->getPrimaryKey()]);
 
-                        if ('_new' === $id) {
+                        if ('_new' === $primaryKey) {
                             $repository->insert($row);
 
                             return $app->redirect($app['url_generator']->generate('administration_table', array('table' => $table)));
@@ -98,7 +97,7 @@ class AdministrationController implements ServiceProviderInterface
 
         $app->match('/administration', function () use ($app) {
             if (is_null($app['silexcms.security']->getUsername())) {
-                return $app->redirect($app['url_generator']->generate('index'));
+                return $app->redirect($app['url_generator']->generate('administration_login'));
             }
 
             $tables = array_keys($app['silexcms.sets']);

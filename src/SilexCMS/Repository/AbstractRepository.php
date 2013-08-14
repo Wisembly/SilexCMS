@@ -89,30 +89,4 @@ abstract class AbstractRepository extends DataMap
     {
         return $this->mapFromDb($this->db->fetchAll("SELECT * FROM {$this->table}"), $mapForeigns);
     }
-
-    public function getTables()
-    {
-        $listTables = array();
-        $dbOptions = $this->db->getParams();
-
-        if ('pdo_mysql' === $dbOptions['driver']) {
-            $tables = $this->db->fetchAll('SHOW tables');
-
-            foreach ($tables as $table) {
-                $listTables[] = array_shift($table);
-            }
-
-            return $listTables;
-        }
-
-        if ('pdo_sqlite' === $dbOptions['driver']) {
-            $tables = $this->db->fetchAll('SELECT * FROM sqlite_master WHERE type="table"');
-
-            foreach ($tables as $table) {
-                $listTables[] = $table['tbl_name'];
-            }
-
-            return $listTables;
-        }
-    }
 }

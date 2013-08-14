@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use SilexCMS\Repository\GenericRepository;
 use SilexCMS\Response\TransientResponse;
 
-use SilexCMS\Set\SetInteface;
-
 class KeyValueSet implements ServiceProviderInterface, SetInterface
 {
     private $block;
