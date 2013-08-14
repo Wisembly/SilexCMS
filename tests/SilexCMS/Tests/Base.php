@@ -22,7 +22,6 @@ class Base extends WebTestCase
             'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
             'twig.path'             => array(
                 __DIR__ . '/Resources/views',
-                __DIR__ . '/../../../src/SilexCMS/Resources/views',
             ),
             'locale_fallback'       => 'en',
             'debug'                 => isset($options['debug']) ? $options['debug'] : true,
