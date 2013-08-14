@@ -1,33 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Silexcms by Wisembly</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Silexcms : Silex CMS aiming to create powerful showcase websites" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Silexcms</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Silexcms</h1>
-        <p>Silex CMS aiming to create powerful showcase websites</p>
 
-        <p class="view"><a href="https://github.com/Wisembly/SilexCMS">View the Project on GitHub <small>Wisembly/SilexCMS</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Wisembly/SilexCMS">View on GitHub</a>
 
+          <h1 id="project_title">Silexcms</h1>
+          <h2 id="project_tagline">Silex CMS aiming to create powerful showcase websites</h2>
 
-        <ul>
-          <li><a href="https://github.com/Wisembly/SilexCMS/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/Wisembly/SilexCMS/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/Wisembly/SilexCMS">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Wisembly/SilexCMS/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Wisembly/SilexCMS/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a name="silexcms" class="anchor" href="#silexcms"><span class="octicon octicon-link"></span></a>SilexCMS</h1>
 
@@ -87,7 +90,7 @@ the resulting objects in an accessible variable.</p>
 First, register your available DataSets for your application:</p>
 
 <div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">DataSet</span><span class="p">(</span><span class="s1">'twig_name'</span><span class="p">,</span> <span class="s1">'table_name'</span><span class="p">));</span>
-<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">DataSet</span><span class="p">(</span><span class="s1">'users'</span><span class="p">,</span> <span class="s1">'User'</span><span class="p">));</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">DataSet</span><span class="p">(</span><span class="s1">'users'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">));</span>
 </pre></div>
 
 <p>Then, use them in your Twig templates:</p>
@@ -102,6 +105,33 @@ Users emails:
 {% for user in app.users %}
   email: {{ user.email }}
 {% endfor %}
+</code></pre>
+
+<h3>
+<a name="keyvaluesets" class="anchor" href="#keyvaluesets"><span class="octicon octicon-link"></span></a>KeyValueSets</h3>
+
+<p>KeyValueSets are an easy and handy way to retrieve from your database key =&gt; values sets
+in your Twig templates. They work like DataSets above, but allows to access values
+differently in your templates.</p>
+
+<div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">DataSet</span><span class="p">(</span><span class="s1">'twig_name'</span><span class="p">,</span> <span class="s1">'table_name'</span><span class="p">,</span> <span class="s1">'key_name'</span><span class="p">));</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">DataSet</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">,</span> <span class="s1">'messages'</span><span class="p">,</span> <span class="s1">'key'</span><span class="p">));</span>
+</pre></div>
+
+<p>For the following set:</p>
+
+<pre><code>| key | value |
+| foo | bar   |
+| bar | baz   |
+</code></pre>
+
+<p>In your template you could then use:</p>
+
+<pre><code>{% bloc messages %}{% endbloc %}
+
+{# will output "bar" #}
+foo value is: {{ app.messages.foo }}
+
 </code></pre>
 
 <h4>
@@ -186,12 +216,17 @@ in the <code>app[name]</code> variable.</p>
 
 <p>SilexCMS is licensed under the MIT license.</p>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/Wisembly">Wisembly</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Silexcms maintained by <a href="https://github.com/Wisembly">Wisembly</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
