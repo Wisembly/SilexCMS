@@ -11,26 +11,39 @@ use Symfony\Component\HttpFoundation\Response;
 use SilexCMS\Repository\GenericRepository;
 use SilexCMS\Response\TransientResponse;
 
-class KeyValueSet implements ServiceProviderInterface
+use SilexCMS\Set\SetInteface;
+
+class KeyValueSet implements ServiceProviderInterface, SetInterface
 {
-    private $key;
-    private $app;
     private $block;
     private $table;
+    private $repository;
+    private $primaryKey;
 
-    public function __construct($block, $table, $key)
+    public function __construct($block, $table, $primaryKey)
     {
-        $this->key = $key;
         $this->block = $block;
         $this->table = $table;
+        $this->primaryKey = $primaryKey;
     }
 
     public function boot(Application $app) {}
 
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+
+    public function registerSet(Application $app)
+    {
+        $app['silexcms.sets'] = array_merge($app['silexcms.sets'], array($this->table => $this));
+    }
+
     public function register(Application $app)
     {
         $self = $this;
-        $this->app = $app;
+        $this->repository = new GenericRepository($app['db'], $this->table, $this->primaryKey);
+        $this->registerSet($app);
 
         // since 5 nov 2012 (see changelog..) after and before event changed priorities..
         // Set up prioirity to 8, and it just works fine..
@@ -52,18 +65,17 @@ class KeyValueSet implements ServiceProviderInterface
         }
     }
 
-    public function getSet()
+    public function getSet($mappForeign = false)
     {
-        $repository = new GenericRepository($this->app['db'], $this->table);
-        $values = $repository->findAll();
+        $values = $this->repository->findAll($mappForeign);
 
-        if (!empty($values) && !isset($values[0][$this->key])) {
-            throw new \Exception("You must provide a valid key, '{$this->key}' is not");
+        if (!empty($values) && !isset($values[0][$this->primaryKey])) {
+            throw new \Exception("You must provide a valid key, '{$this->primaryKey}' is not");
         }
 
         foreach ($values as $key => $value) {
-            $newKey = $value[$this->key];
-            unset($value[$this->key]);
+            $newKey = $value[$this->primaryKey];
+            unset($value[$this->primaryKey]);
 
             if (1 === count($value)) {
                 $value = array_pop($value);

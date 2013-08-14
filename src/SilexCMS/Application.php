@@ -93,5 +93,8 @@ class Application extends BaseApplication
 
         // registering console commands
         $this['console']->add(new ClearCacheCommand());
+
+        // registered sets container
+        $this['silexcms.sets'] = array();
     }
 }

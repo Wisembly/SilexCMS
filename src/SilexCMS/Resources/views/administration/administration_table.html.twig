@@ -1,3 +1,5 @@
+{% set primaryKey = app['silexcms.sets'][ table ].getRepository().getPrimaryKey() %}
+
 <html>
 <body>
     <header class="main-header container">
@@ -13,7 +15,7 @@
             <div class="main-content contact">
                 <div class="row">
                     <div class="span12">
-                        <a class="btn btn-inverse btn-large add-entry" href="{{ path('administration_edit', {'table': table, 'id': 'new'}) }}">Create a fresh new entry!</a>
+                        <a class="btn btn-inverse btn-large add-entry" href="{{ path('administration_edit', {'table': table, 'primaryKey': '_new'}) }}">Create a fresh new entry!</a>
                         <table class="table table-striped table-condensed">
                             <thead>
                                 <tr>
@@ -26,7 +28,7 @@
                             <tbody>
                             {% for row in rows %}
                                 <tr>
-                                    <td><a class="btn btn-small btn-info" href="{{ path('administration_edit', {'table': table, 'id': row.id}) }}">Edit</a></td>
+                                    <td><a class="btn btn-small btn-info" href="{{ path('administration_edit', {'table': table, 'primaryKey': row[primaryKey]}) }}">Edit</a></td>
                                     {% for item in row %}
                                         <td>{% if item == "true" %}yes{% elseif item == false %}no{% else %}{{ item }}{% endif %}</td>
                                     {% endfor %}
@@ -34,7 +36,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <a class="btn btn-inverse btn-large add-entry" href="{{ path('administration_edit', {'table': table, 'id': 'new'}) }}">Create a fresh new entry!</a>
+                        <a class="btn btn-inverse btn-large add-entry" href="{{ path('administration_edit', {'table': table, 'primaryKey': '_new'}) }}">Create a fresh new entry!</a>
                     </div>
                 </div>
             </div>

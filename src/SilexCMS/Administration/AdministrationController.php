@@ -10,7 +10,6 @@ use SilexCMS\Response\TransientResponse;
 
 use Symfony\Component\HttpFoundation\Request;
 use SilexCMS\Repository\Schema;
-use SilexCMS\Repository\GenericRepository;
 use Doctrine\DBAL\Connection as Database;
 
 use Silex\ServiceProviderInterface;
@@ -34,7 +33,7 @@ class AdministrationController implements ServiceProviderInterface
                 return $app->redirect($app['url_generator']->generate('index'));
             }
 
-            $repository = new GenericRepository($this->db, $table);
+            $repository = $app['silexcms.sets'][$table]->getRepository();
             $schema = $repository->getSchema();
             $rows = $repository->findAll(true);
 
@@ -44,23 +43,24 @@ class AdministrationController implements ServiceProviderInterface
                 }, $row);
             }
 
-            return new TransientResponse($app, $app['silexcms.template.loader']->load('administration/administration_table.html.twig'), array('table' => $table, 'fields' => $schema, 'rows' => $data));
+            return new TransientResponse($app, $app['silexcms.template.loader']->load('administration/administration_table.html.twig'), array(
+                'table'  => $table,
+                'fields' => $schema,
+                'rows'   => $data,
+            ));
         })
         ->bind('administration_table');
 
-        $app->match('/administration/{table}/{id}', function (Request $req, $table, $id) use ($app) {
+        $app->match('/administration/{table}/{primaryKey}', function (Request $req, $table, $primaryKey) use ($app) {
 
             if (is_null($app['silexcms.security']->getUsername())) {
                 return $app->redirect($app['url_generator']->generate('index'));
             }
 
-            if (!is_numeric($id) && 'new' !== $id) {
-                throw new \Exception("Wrong parameters");
-            }
-
-            $repository = new GenericRepository($this->db, $table);
-            $formGenerator = new Form($repository);
-            $form = $app['form.factory']->create(new TableType($app, $table), $formGenerator->getData('new' === $id ? null : $id));
+            $set = $app['silexcms.sets'][$table];
+            $repository = $set->getRepository();
+            $formGenerator = new Form($set);
+            $form = $app['form.factory']->create(new TableType($app, $table), $formGenerator->getData('_new' === $primaryKey ? null : $primaryKey));
 
             if ($req->getMethod() === 'POST') {
                 $form->bindRequest($req);
@@ -69,10 +69,10 @@ class AdministrationController implements ServiceProviderInterface
                     $data = $form->getData();
 
                     foreach ($data['row'] as $row) {
-                        $where = array('id' => $row['id']);
+                        $where = array($repository->getPrimaryKey() => $row[$repository->getPrimaryKey()]);
                         unset($row['id']);
 
-                        if ('new' === $id) {
+                        if ('_new' === $id) {
                             $repository->insert($row);
 
                             return $app->redirect($app['url_generator']->generate('administration_table', array('table' => $table)));
@@ -89,9 +89,9 @@ class AdministrationController implements ServiceProviderInterface
             }
 
             return new TransientResponse($app, $app['silexcms.template.loader']->load('administration/administration_edit.html.twig'), array(
-                'table' => $table,
-                'id'    => $id,
-                'form'  => $form->createView()
+                'table'         => $table,
+                'primaryKey'    => $primaryKey,
+                'form'          => $form->createView()
             ));
         })
         ->bind('administration_edit');
@@ -101,8 +101,7 @@ class AdministrationController implements ServiceProviderInterface
                 return $app->redirect($app['url_generator']->generate('index'));
             }
 
-            $schema = new Schema($app['db']);
-            $tables = $schema->getTables();
+            $tables = array_keys($app['silexcms.sets']);
 
             return new TransientResponse($app, $app['silexcms.template.loader']->load('administration/administration_hub.html.twig'), array('tables' => $tables));
         })

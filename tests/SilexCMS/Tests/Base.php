@@ -20,7 +20,10 @@ class Base extends WebTestCase
     {
         $app = new Application(array_merge(array(
             'db.options'            => array('driver' => 'pdo_sqlite', 'memory' => true),
-            'twig.path'             => __DIR__ . '/Resources/views',
+            'twig.path'             => array(
+                __DIR__ . '/Resources/views',
+                __DIR__ . '/../../../src/SilexCMS/Resources/views',
+            ),
             'locale_fallback'       => 'en',
             'debug'                 => isset($options['debug']) ? $options['debug'] : true,
         ), $options));

@@ -9,9 +9,11 @@ class GenericRepository extends AbstractRepository
 {
     protected $table = null;
     protected $schema = null;
+    protected $primaryKey;
 
-    public function __construct(Database $db, $table)
+    public function __construct(Database $db, $table, $primaryKey = 'id')
     {
+        $this->primaryKey = $primaryKey;
         $this->table = mysql_real_escape_string($table);
         $this->schema = $db->getSchemaManager()->listTableColumns($table);
 
@@ -22,6 +24,11 @@ class GenericRepository extends AbstractRepository
         }
 
         parent::__construct($db);
+    }
+
+    public function getPrimaryKey()
+    {
+        return $this->primaryKey;
     }
 
     public function getTable()

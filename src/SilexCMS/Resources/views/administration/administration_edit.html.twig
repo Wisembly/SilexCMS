@@ -1,13 +1,13 @@
 <html>
 <body>
     <header class="main-header container">
-        <h1><small>Manage your website</small> {{ table|title }} #{{ id }}</h1>
+        <h1><small>Manage your website</small> {{ table|title }} #{{ primaryKey }}</h1>
     </header>
 
     <div class="container">
         <div class="bread-crumb">
             <a class="catcher btn btn-small" href="{{path('logout')}}">Logout</a>
-            <a href="/">Home</a> > <a href="{{path('administration_hub') }}">Administration Hub</a> > <a href="{{ path('administration_table', {'table': table}) }}">{{ table|title }}</a> > #{{ id }}
+            <a href="/">Home</a> > <a href="{{path('administration_hub') }}">Administration Hub</a> > <a href="{{ path('administration_table', {'table': table}) }}">{{ table|title }}</a> > #{{ primaryKey }}
         </div>
         <div class="row content-wrapper">
             <div class="main-content contact">
