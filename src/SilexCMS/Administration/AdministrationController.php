@@ -69,7 +69,11 @@ class AdministrationController implements ServiceProviderInterface
 
                     foreach ($data['row'] as $row) {
                         $where = array($repository->getPrimaryKey() => $row[$repository->getPrimaryKey()]);
-                        unset($row[$repository->getPrimaryKey()]);
+
+                        // unset id if primaryKey is autoincrement id
+                        if ('id' === $repository->getPrimaryKey()) {
+                            unset($row['id']);
+                        }
 
                         if ('_new' === $primaryKey) {
                             $repository->insert($row);
