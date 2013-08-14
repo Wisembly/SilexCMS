@@ -14,6 +14,7 @@ use SilexCMS\Response\TransientResponse;
 class KeyValueSet implements ServiceProviderInterface
 {
     private $key;
+    private $app;
     private $block;
     private $table;
 
@@ -29,6 +30,7 @@ class KeyValueSet implements ServiceProviderInterface
     public function register(Application $app)
     {
         $self = $this;
+        $this->app = $app;
 
         // since 5 nov 2012 (see changelog..) after and before event changed priorities..
         // Set up prioirity to 8, and it just works fine..
@@ -45,27 +47,32 @@ class KeyValueSet implements ServiceProviderInterface
     {
         if ($resp instanceof TransientResponse) {
             if ($resp->getTemplate()->hasBlock($this->block)) {
-                $repository = new GenericRepository($app['db'], $this->table);
-                $values = $repository->findAll();
-
-                if (!empty($values) && !isset($values[0][$this->key])) {
-                    throw new \Exception("You must provide a valid key, '{$this->key}' is not");
-                }
-
-                foreach ($values as $key => $value) {
-                    $newKey = $value[$this->key];
-                    unset($value[$this->key]);
-
-                    if (1 === count($value)) {
-                        $value = array_pop($value);
-                    }
-
-                    $values[$newKey] = $value;
-                    unset($values[$key]);
-                }
-
-                $app[$this->block] = $values;
+                $app[$this->block] = $this->getSet();
             }
         }
+    }
+
+    public function getSet()
+    {
+        $repository = new GenericRepository($this->app['db'], $this->table);
+        $values = $repository->findAll();
+
+        if (!empty($values) && !isset($values[0][$this->key])) {
+            throw new \Exception("You must provide a valid key, '{$this->key}' is not");
+        }
+
+        foreach ($values as $key => $value) {
+            $newKey = $value[$this->key];
+            unset($value[$this->key]);
+
+            if (1 === count($value)) {
+                $value = array_pop($value);
+            }
+
+            $values[$newKey] = $value;
+            unset($values[$key]);
+        }
+
+        return $values;
     }
 }
