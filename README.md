@@ -51,7 +51,7 @@ Datasets are an easy and handy way to retrieve database data directly in your Tw
 First, register your available DataSets for your application:
 ```php
 $app->register(new DataSet('twig_name', 'table_name'));
-$app->register(new DataSet('users', 'User'));
+$app->register(new DataSet('users', 'user'));
 ```
 
 Then, use them in your Twig templates:
@@ -66,6 +66,32 @@ Users emails:
 {% for user in app.users %}
   email: {{ user.email }}
 {% endfor %}
+```
+
+### KeyValueSets
+
+KeyValueSets are an easy and handy way to retrieve from your database key => values sets
+in your Twig templates. They work like DataSets above, but allows to access values
+differently in your templates.
+```php
+$app->register(new DataSet('twig_name', 'table_name', 'key_name'));
+$app->register(new DataSet('messages', 'messages', 'key'));
+```
+
+For the following set:
+```
+| key | value |
+| foo | bar   |
+| bar | baz   |
+```
+
+In your template you could then use:
+```
+{% bloc messages %}{% endbloc %}
+
+{# will output "bar" #}
+foo value is: {{ app.messages.foo }}
+
 ```
 
 #### Foreign Twig extension

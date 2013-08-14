@@ -63,6 +63,10 @@ class Base extends WebTestCase
         $db->executeQuery('CREATE TABLE map (key char, value char)');
         $db->insert('map', array('key' => 'foo', 'value' => 'bar'));
         $db->insert('map', array('key' => 'bar', 'value' => 'baz'));
+
+        $db->executeQuery('CREATE TABLE map2 (key char, value char, value2 char)');
+        $db->insert('map2', array('key' => 'foo', 'value' => 'bar', 'value2' => 'baz'));
+        $db->insert('map2', array('key' => 'bar', 'value' => 'baz', 'value2' => 'qux'));
     }
 
     /**
