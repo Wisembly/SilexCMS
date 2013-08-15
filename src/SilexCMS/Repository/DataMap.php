@@ -4,13 +4,14 @@ namespace SilexCMS\Repository;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Connection as Database;
 
 class DataMap
 {
-    private $db;
-    private $schema;
+    protected $db;
+    protected $schema;
 
-    public function __construct($db, $schema)
+    public function __construct(Database $db, $schema)
     {
         $this->db = $db;
         $this->schema = $schema;
@@ -36,18 +37,7 @@ class DataMap
             }
 
             if (isset($this->schema[$key])) {
-                switch ($this->schema[$key]->getType()) {
-                    case 'Boolean' :
-                        $value = $value == 1 ;
-                    break;
-                    case 'Integer' :
-                        $value = (int) $value;
-                    break;
-                    case 'Array' :
-                    case 'Object':
-                        $value = unserialize($value);
-                    break;
-                }
+                $value = $this->castFromDb($key, $value);
             }
 
             $mappedData[$key] = $value;
@@ -62,18 +52,7 @@ class DataMap
 
         foreach ($data as $key => $value) {
             if (isset($this->schema[$key])) {
-                switch ($this->schema[$key]->getType()) {
-                    case 'Boolean' :
-                        $value = $value ? 1 : 0 ;
-                    break;
-                    case 'Integer' :
-                        $value = (int) $value;
-                    break;
-                    case 'Array' :
-                    case 'Object':
-                        $value = serialize($value);
-                    break;
-                }
+                $value = $this->castToDb($key, $value);
             }
 
             $mappedData[$key] = $value;
@@ -113,5 +92,41 @@ class DataMap
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function castFromDb($key, $value)
+    {
+        switch ($this->schema[$key]->getType()) {
+            case 'Boolean' :
+                $value = $value == 1 ;
+            break;
+            case 'Integer' :
+                $value = (int) $value;
+            break;
+            case 'Array' :
+            case 'Object':
+                $value = unserialize($value);
+            break;
+        }
+
+        return $value;
+    }
+
+    public function castToDb($key, $value)
+    {
+        switch ($this->schema[$key]->getType()) {
+            case 'Boolean' :
+                $value = $value ? 1 : 0;
+            break;
+            case 'Integer' :
+                $value = (int) $value;
+            break;
+            case 'Array' :
+            case 'Object':
+                $value = serialize($value);
+            break;
+        }
+
+        return $value;
     }
 }

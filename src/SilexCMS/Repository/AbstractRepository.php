@@ -3,18 +3,30 @@
 namespace SilexCMS\Repository;
 
 use SilexCMS\Repository\DataMap;
+use Doctrine\DBAL\Connection as Database;
 
 abstract class AbstractRepository extends DataMap
 {
-    private $db;
+    protected $db;
     protected $table;
-    protected $schema;
 
-    public function __construct($db)
+    public function __construct(Database $db, array $schema = array())
     {
         $this->db = $db;
 
-        parent::__construct($db, $this->schema);
+        parent::__construct($db, $schema);
+    }
+
+    public function setTable($table)
+    {
+        $this->table = mysql_real_escape_string($table);
+
+        return $this;
+    }
+
+    public function getTable()
+    {
+        return $this->table;
     }
 
     public function query($query, $arguments = array())

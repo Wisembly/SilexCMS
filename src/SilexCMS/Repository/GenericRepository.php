@@ -7,33 +7,33 @@ use Doctrine\DBAL\Connection as Database;
 
 class GenericRepository extends AbstractRepository
 {
-    protected $table = null;
-    protected $schema = null;
+    protected $table;
+    protected $schema;
     protected $primaryKey;
 
     public function __construct(Database $db, $table, $primaryKey = 'id')
     {
-        $this->primaryKey = $primaryKey;
         $this->table = mysql_real_escape_string($table);
+        $this->primaryKey = mysql_real_escape_string($primaryKey);
         $this->schema = $db->getSchemaManager()->listTableColumns($table);
 
-        $dbOptions = $db->getParams();
+        parent::__construct($db, $this->schema);
 
-        if ('pdo_mysql' === $dbOptions['driver'] && isset($dbOptions['charset'])) {
-            $db->query("SET NAMES '" . $dbOptions['charset'] . "'");
+        $this->init();
+    }
+
+    private function init()
+    {
+        $options = $this->db->getParams();
+
+        if ('pdo_mysql' === $options['driver'] && isset($options['charset'])) {
+            $db->query("SET NAMES '" . $options['charset'] . "'");
         }
-
-        parent::__construct($db);
     }
 
     public function getPrimaryKey()
     {
         return $this->primaryKey;
-    }
-
-    public function getTable()
-    {
-        return $this->table;
     }
 
     public function getSchema()
