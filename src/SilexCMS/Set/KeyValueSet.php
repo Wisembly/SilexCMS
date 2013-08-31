@@ -13,10 +13,11 @@ use SilexCMS\Response\TransientResponse;
 
 class KeyValueSet implements ServiceProviderInterface, SetInterface
 {
-    private $block;
-    private $table;
-    private $repository;
-    private $primaryKey;
+    protected $block;
+    protected $table;
+    protected $repository;
+    protected $primaryKey;
+    protected $app;
 
     public function __construct($block, $table, $primaryKey)
     {
@@ -40,6 +41,7 @@ class KeyValueSet implements ServiceProviderInterface, SetInterface
     public function register(Application $app)
     {
         $self = $this;
+        $this->app = $app;
         $this->repository = new GenericRepository($app['db'], $this->table, $this->primaryKey);
         $this->registerSet($app);
 
