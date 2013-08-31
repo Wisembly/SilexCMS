@@ -27,7 +27,7 @@ class GenericRepository extends AbstractRepository
         $options = $this->db->getParams();
 
         if ('pdo_mysql' === $options['driver'] && isset($options['charset'])) {
-            $db->query("SET NAMES '" . $options['charset'] . "'");
+            $this->db->query("SET NAMES '" . $options['charset'] . "'");
         }
     }
 
