@@ -55,7 +55,7 @@ class DataMap
                 $value = $this->castToDb($key, $value);
             }
 
-            $mappedData[$key] = $value;
+            $mappedData["`{$key}`"] = $value;
         }
 
         return $mappedData;

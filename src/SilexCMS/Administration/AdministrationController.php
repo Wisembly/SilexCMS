@@ -68,12 +68,10 @@ class AdministrationController implements ServiceProviderInterface
                     $data = $form->getData();
 
                     foreach ($data['row'] as $row) {
-                        $where = array($repository->getPrimaryKey() => $row[$repository->getPrimaryKey()]);
+                        $where = array('`'. $repository->getPrimaryKey() . '`' => $row[$repository->getPrimaryKey()]);
 
-                        // unset id if primaryKey is autoincrement id
-                        if ('id' === $repository->getPrimaryKey()) {
-                            unset($row['id']);
-                        }
+                        // unset primaryKey, we cannot update it
+                        unset($row[$repository->getPrimaryKey()]);
 
                         if ('_new' === $primaryKey) {
                             $repository->insert($row);
