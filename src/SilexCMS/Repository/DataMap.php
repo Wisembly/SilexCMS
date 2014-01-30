@@ -55,7 +55,8 @@ class DataMap
                 $value = $this->castToDb($key, $value);
             }
 
-            $mappedData["`{$key}`"] = $value;
+            // protect unprotected keys
+            $mappedData[false !== strpos($key, '`') ? $key : "`{$key}`"] = $value;
         }
 
         return $mappedData;

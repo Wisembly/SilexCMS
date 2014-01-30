@@ -68,18 +68,18 @@ class AdministrationController implements ServiceProviderInterface
                     $data = $form->getData();
 
                     foreach ($data['row'] as $row) {
-                        $where = array('`'. $repository->getPrimaryKey() . '`' => $row[$repository->getPrimaryKey()]);
-
-                        // unset primaryKey, we cannot update it
-                        unset($row[$repository->getPrimaryKey()]);
+                        // unset id primaryKey
+                        if ('id' === $repository->getPrimaryKey()) {
+                            unset($row[$repository->getPrimaryKey()]);
+                        }
 
                         if ('_new' === $primaryKey) {
                             $repository->insert($row);
 
                             return $app->redirect($app['url_generator']->generate('administration_table', array('table' => $table)));
-                        } else {
-                            $repository->update($row, $where);
                         }
+
+                        $repository->update($row, array('`'. $repository->getPrimaryKey() . '`' => $row[$repository->getPrimaryKey()]));
 
                         try {
                             // cache strategy if exist. Update cache version
