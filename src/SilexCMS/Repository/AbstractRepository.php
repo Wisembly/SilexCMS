@@ -29,11 +29,6 @@ abstract class AbstractRepository extends DataMap
         return $this->table;
     }
 
-    public function quote($string)
-    {
-        return $this->db->quote($string);
-    }
-
     public function query($query, $arguments = array())
     {
         return $this->db->executeQuery($query, $arguments);
@@ -61,7 +56,9 @@ abstract class AbstractRepository extends DataMap
             $condition = array('id' => $condition);
         }
 
-        $where = implode(' AND ', array_map(function ($name) { return $this->db->quote($name) . ' = ?'; }, array_keys($condition)));
+        $where = implode(' AND ', array_map(function ($name) {
+            return addslashes($name) . ' = ?';
+        }, array_keys($condition)));
 
         if (!empty($where)) {
             $where = ' WHERE ' . $where;
