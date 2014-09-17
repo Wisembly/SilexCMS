@@ -24,6 +24,6 @@ class Form
             return array($index => array(array_map(function ($val) { return null; }, $this->repository->getSchema())));
         }
 
-        return array($index => $this->repository->fetchAll("SELECT * FROM " . $this->repository->getTable() . " WHERE `" . $this->repository->getPrimaryKey() . "` = '" . mysql_real_escape_string($primaryKey) . "'", false));
+        return array($index => $this->repository->fetchAll("SELECT * FROM " . $this->repository->getTable() . " WHERE `" . $this->repository->getPrimaryKey() . "` = '" . $this->repository->quote($primaryKey) . "'", false));
     }
 }

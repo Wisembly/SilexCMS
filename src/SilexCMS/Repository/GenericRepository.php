@@ -13,8 +13,8 @@ class GenericRepository extends AbstractRepository
 
     public function __construct(Database $db, $table, $primaryKey = 'id')
     {
-        $this->table = mysql_real_escape_string($table);
-        $this->primaryKey = mysql_real_escape_string($primaryKey);
+        $this->table = $table;
+        $this->primaryKey = $primaryKey;
         $this->schema = $db->getSchemaManager()->listTableColumns($table);
 
         parent::__construct($db, $this->schema);

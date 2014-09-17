@@ -19,7 +19,7 @@ abstract class AbstractRepository extends DataMap
 
     public function setTable($table)
     {
-        $this->table = mysql_real_escape_string($table);
+        $this->table = $table;
 
         return $this;
     }
@@ -27,6 +27,11 @@ abstract class AbstractRepository extends DataMap
     public function getTable()
     {
         return $this->table;
+    }
+
+    public function quote($string)
+    {
+        return $this->db->quote($string);
     }
 
     public function query($query, $arguments = array())
@@ -56,10 +61,10 @@ abstract class AbstractRepository extends DataMap
             $condition = array('id' => $condition);
         }
 
-        $where = implode(' AND ', array_map(function ($name) { return mysql_real_escape_string($name) . ' = ?'; }, array_keys($condition)));
+        $where = implode(' AND ', array_map(function ($name) { return $this->db->quote($name) . ' = ?'; }, array_keys($condition)));
 
         if (!empty($where)) {
-            $where = ' WHERE ' . mysql_real_escape_string($where);
+            $where = ' WHERE ' . $where;
         }
 
         return $this->mapFromDb($this->db->executeQuery("SELECT * FROM {$this->table}{$where}", array_values($condition))->fetchAll(), $mapForeigns);
